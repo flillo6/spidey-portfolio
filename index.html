@@ -27,7 +27,80 @@
   
   <!-- Lenis CSS for smooth default rendering -->
   <style>
-    html.lenis, html.lenis body {
+
+    /* ╔════════════════════════════════════╗
+       ║   PRELOADER PRO — WEB + COMIC     ║
+       ╚════════════════════════════════════╝ */
+    #preloader{
+      position:fixed; inset:0; z-index:9999;
+      background:#000; overflow:hidden;
+    }
+
+
+
+    /* WEB — starts tiny, expands linearly the whole time */
+    #pl-web{
+      position:absolute; top:50%; left:50%;
+      width:min(120vw,120vh); height:min(120vw,120vh);
+      z-index:3;
+      transform-origin:center;
+      animation:webExpL 1.65s linear forwards;
+      filter:drop-shadow(0 0 5px rgba(226,54,54,.35));
+    }
+    @keyframes webExpL{
+      0%  {transform:translate(-50%,-50%) scale(.09);}
+      100%{transform:translate(-50%,-50%) scale(22);}
+    }
+    /* Individual stroke draw */
+    @keyframes wd{to{stroke-dashoffset:0}}
+    @keyframes dotP{
+      0%,100%{r:4} 50%{r:7;opacity:.7}
+    }
+
+    /* Comic elements — pop like a comic panel */
+    .pk{
+      position:absolute; z-index:8;
+      font-family:'Space Grotesk',sans-serif; font-weight:900;
+      text-transform:uppercase; letter-spacing:-.03em; line-height:1;
+      pointer-events:none;
+      opacity:0;
+      transform:scale(2.4) rotate(var(--r));
+      animation:comicPop .3s var(--d) cubic-bezier(.33,1.6,.68,1) forwards;
+    }
+    @keyframes comicPop{
+      0%  {opacity:0; transform:scale(2.4) rotate(var(--r));}
+      15% {opacity:1;}
+      65% {transform:scale(.92) rotate(var(--r));}
+      82% {transform:scale(1.04) rotate(var(--r));}
+      100%{opacity:1; transform:scale(1) rotate(var(--r));}
+    }
+    /* THWIP glitch persist */
+    .pk:first-child{
+      animation:comicPop .3s var(--d) cubic-bezier(.33,1.6,.68,1) forwards,
+                 thwipG .09s .65s steps(1) infinite;
+    }
+    @keyframes thwipG{
+      0%  {text-shadow:3px 0 #00eeff,-3px 0 #ff00aa}
+      33% {text-shadow:-4px 1px #00eeff,4px -1px #ff00aa;transform:scale(1) rotate(-9.5deg) translate(2px,-1px)}
+      66% {text-shadow:2px 0 #f30,-2px 0 #0e6;transform:scale(1) rotate(-8.5deg) translate(-1px,1px)}
+      100%{text-shadow:3px 0 #00eeff,-3px 0 #ff00aa}
+    }
+
+    /* Dismiss */
+    #preloader.hidden{display:none}
+    /* ─────────────────────────────────── */
+
+
+    
+
+
+    
+
+
+
+    
+
+            html.lenis, html.lenis body {
       height: auto;
     }
     .lenis.lenis-smooth {
@@ -59,7 +132,7 @@
   
   <style>
     body {
-      background-color: #000000;
+      background-color: #000;
       color: #e2e2e2;
       font-family: 'Space Grotesk', sans-serif;
       overflow-x: hidden;
@@ -85,50 +158,8 @@
       color: #fff;
     }
 
-    .brutal-grid-item {
-        border-right: 1px solid #5b403d;
-        border-bottom: 1px solid #5b403d;
-    }
-
-    /* Archive Hover Override */
-    .archive-item {
-      transition: color 0.4s ease;
-    }
-    .archive-item:hover * {
-      color: #fff !important;
-      border-color: rgba(255,255,255,0.3) !important;
-    }
-    
-    .archive-bg-container {
-      clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-      transition: clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .archive-item:hover .archive-bg-container {
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    }
-
-    .parallax-media {
-      transform-origin: center;
-      will-change: transform;
-    }
-
-    /* Ticker config */
-    .ticker-container {
-      display: inline-block;
-      animation: ticker 25s linear infinite;
-    }
-    @keyframes ticker {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .hacker-line {
-      display: inline-block;
-      vertical-align: bottom;
-      overflow: hidden;
-      white-space: nowrap;
-      transition: border-color 0.1s;
-    }
-
+    /* ================================
+    ================================ */
     /* ================================
        ANIMATED UNDERLINE LINKS
     ================================ */
@@ -156,59 +187,73 @@
        ARCHIVE — Reference Layout
     ================================ */
     .archive-item {
-      padding: 2rem 3rem;
+      padding: 2.8rem 4rem;
       display: grid;
-      grid-template-columns: 3.5rem 1fr auto;
+      grid-template-columns: 5rem 1fr auto;
       align-items: center;
-      gap: 2rem;
+      gap: 3rem;
       position: relative;
       overflow: hidden;
-      border-bottom: 1px solid #1e0e0e;
-      transition: background 0.4s ease, padding 0.35s ease;
+      border-bottom: 1px solid rgba(226,54,54,0.2);
+      border-top: 0;
+      transition: padding 0.45s cubic-bezier(0.16,1,0.3,1);
     }
+    .archive-item:first-child { border-top: 1px solid rgba(226,54,54,0.2); }
     @media (max-width: 768px) {
-      .archive-item { grid-template-columns: 2.5rem 1fr; gap: 1rem; padding: 1.5rem; }
+      .archive-item { grid-template-columns: 3rem 1fr; gap: 1.2rem; padding: 2rem 1.5rem; }
     }
-    .archive-item:hover { background: rgba(20,5,5,0.6); padding-top: 2.8rem; padding-bottom: 2.8rem; }
+    .archive-item:hover { padding-top: 3.8rem; padding-bottom: 3.8rem; }
     .archive-num {
       font-family: 'Liberation Mono', monospace;
-      font-size: 0.72rem; color: #3a2020;
-      letter-spacing: 0.05em; align-self: flex-start; padding-top: 0.7em;
+      font-size: 0.7rem; color: #e2e2e2;
+      letter-spacing: 0.05em; align-self: flex-start; padding-top: 0.8em;
     }
     .archive-title {
-      font-size: clamp(2.2rem, 4.5vw, 5.5rem);
+      font-size: clamp(2.4rem, 5vw, 6rem);
       font-weight: 700; text-transform: uppercase;
-      letter-spacing: -0.03em; line-height: 0.88;
-      color: #c0c0c0; transition: color 0.3s ease;
+      letter-spacing: -0.04em; line-height: 0.85;
+      color: #e2e2e2; transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
     }
-    .archive-item:hover .archive-title { color: #ffffff; }
+    .archive-item:hover .archive-title {
+      transform: translateX(8px);
+    }
     .archive-meta {
       text-align: right; display: flex;
-      flex-direction: column; align-items: flex-end; gap: 0.5rem;
+      flex-direction: column; align-items: flex-end; gap: 0.6rem;
+      min-width: 200px;
     }
     @media (max-width: 768px) { .archive-meta { display: none; } }
     .archive-tags {
       font-family: 'Liberation Mono', monospace;
-      font-size: 0.62rem; text-transform: uppercase;
-      letter-spacing: 0.14em; color: #3a2020;
+      font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: #e2e2e2;
       transition: color 0.4s ease; cursor: default;
     }
-    .archive-item:hover .archive-tags { color: #e23636; }
+    .archive-item:hover .archive-tags { color: #e2e2e2; }
     .archive-year {
       font-family: 'Liberation Mono', monospace;
-      font-size: 0.62rem; color: #2a1515;
-      letter-spacing: 0.1em; transition: color 0.4s ease;
+      font-size: 0.65rem; color: #888;
+      letter-spacing: 0.1em;
     }
-    .archive-item:hover .archive-year { color: #6b4040; }
+    .archive-item:hover .archive-year { color: #e2e2e2; }
+    /* BG reveal: collapsed at rest, full height on hover */
     .archive-bg-container {
       clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-      transition: clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: clip-path 0.75s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .archive-item:hover .archive-bg-container {
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
     }
-    .archive-bg-overlay { background: rgba(5, 1, 1, 0.85); }
-    .archive-item:hover .archive-bg-overlay { background: rgba(10, 2, 2, 0.78); }
+    /* Blue overlay — consistent color on all hovered items */
+    .archive-bg-overlay { background: rgba(18, 30, 100, 0.78); }
+
+    /* ================================
+       SKILLS GRID BORDERS
+    ================================ */
+    .brutal-grid-item {
+      border-right: 1px solid rgba(226, 54, 54, 0.2);
+      border-bottom: 1px solid rgba(226, 54, 54, 0.2);
+    }
 
     /* ================================
        GALLERY MEDIA - Professional
@@ -221,12 +266,61 @@
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 20px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
       transition: box-shadow 0.4s ease, border-color 0.4s ease;
-      background: #0a0a0a;
+      background: #000;
     }
     .gallery-media:hover {
       border-color: rgba(226,54,54,0.5);
       box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(226,54,54,0.3), 0 0 30px rgba(226,54,54,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
     }
+
+    /* ================================
+       SPIDER-SENSE PERPETUAL AURA (COMIC STYLE)
+    ================================ */
+    .spider-node { overflow: visible !important; position: relative; z-index: 10; }
+    .gal-sense-png {
+      position: absolute;
+      top: 50%; left: 50%;
+      /* Grandezza naturale, la facciamo solo sbordare un pelo orizzontalmente */
+      width: 120%; 
+      height: auto;
+      object-fit: contain;
+      pointer-events: none;
+      z-index: -1; 
+      /* Rimossi i flash bianchi: via brightness e contrast, resta solo l'alone rosso */
+      filter: drop-shadow(0 0 5px #e23636);
+      animation: dangerJitter 0.45s steps(3) infinite alternate;
+    }
+    
+    @keyframes dangerJitter {
+      /* Spostato ancora più in alto a -95% e reso più opaco (90% - 100%) */
+      0% { transform: translate(-50%, -95%) scale(1.0) rotate(0deg); opacity: 0.9; }
+      50% { transform: translate(-50%, -95%) scale(1.02) rotate(1deg); opacity: 1; filter: drop-shadow(0 0 8px #ff4444); }
+      100% { transform: translate(-50%, -95%) scale(0.98) rotate(-1deg); opacity: 0.95; }
+    }
+    
+    .spider-node:hover .gal-sense-png {
+      animation: dangerJitterHover 0.2s steps(2) infinite alternate;
+    }
+    @keyframes dangerJitterHover {
+      0% { transform: translate(-50%, -95%) scale(1.0); opacity: 0.9; filter: drop-shadow(0 0 5px #e23636); }
+      100% { transform: translate(-50%, -95%) scale(1.05) rotate(2deg); opacity: 1; filter: drop-shadow(0 0 12px #ff4444) drop-shadow(0 0 20px rgba(226,54,54,0.8)); }
+    }
+
+    /* ================================
+       HORIZONTAL TICKER
+    ================================ */
+    .ticker-container {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      width: fit-content;
+      animation: ticker-scrolling 40s linear infinite;
+    }
+    @keyframes ticker-scrolling {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
 
     /* ================================
        PRELOADER
@@ -255,7 +349,7 @@
       opacity: 0; animation: fadeIn 0.5s 0.9s ease forwards;
     }
     #preloader-bar {
-      width: 120px; height: 1px; background: #1a1a1a;
+      width: 120px; height: 1px; background: #000;
       margin-top: 16px; overflow: hidden;
       opacity: 0; animation: fadeIn 0.3s 0.9s ease forwards;
     }
@@ -267,23 +361,26 @@
     @keyframes fadeIn { to { opacity: 1; } }
 
     /* ================================
-       CUSTOM CURSOR — Solo dot rosso
+       CUSTOM CURSOR
     ================================ */
     @media (pointer: fine) {
       * { cursor: none !important; }
     }
     #cursor-dot {
       position: fixed; z-index: 9998; pointer-events: none;
-      width: 10px; height: 10px; border-radius: 50%;
-      background: #e2e2e2;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #ffffff;
+      mix-blend-mode: normal;
       transform: translate(-50%, -50%);
-      transition: width 0.18s ease, height 0.18s ease,
-                  background 0.18s ease, border 0.18s ease;
+      transition: width 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                  height 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                  mix-blend-mode 0s;
     }
-    #cursor-dot.is-hovering {
-      width: 32px; height: 32px;
-      background: transparent;
-      border: 1.5px solid #e23636;
+    /* Lens: red circle + difference → ciano on white text */
+    #cursor-dot.is-blend {
+      width: 64px; height: 64px;
+      background: #e23636;
+      mix-blend-mode: difference;
     }
 
     /* ================================
@@ -330,27 +427,100 @@
   </style>
   <!-- No Three.js needed - using native Canvas 2D for particles -->
 </head>
-<body class="antialiased selection:bg-[#e23636] selection:text-white">
+<body class="antialiased selection:bg-[#e23636] selection:text-white w-full overflow-x-hidden">
 
   <!-- PRELOADER -->
   <div id="preloader">
-    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Spider web geometry -->
-      <path id="preloader-line" stroke="#e23636" stroke-width="0.8" fill="none"
-        d="M60,10 L60,110 M10,60 L110,60 M25,25 L95,95 M95,25 L25,95
-           M60,10 L35,35 L60,60 L85,35 Z
-           M60,10 L10,60 L60,110 L110,60 Z
-           M35,35 L85,35 L85,85 L35,85 Z
-           M60,10 L60,35 M60,85 L60,110
-           M10,60 L35,60 M85,60 L110,60"/>
-      <!-- Center dot -->
-      <circle cx="60" cy="60" r="4" fill="#e23636" opacity="0">
-        <animate attributeName="opacity" values="0;1" dur="0.3s" begin="1s" fill="freeze"/>
-        <animate attributeName="r" values="4;7;4" dur="1s" begin="1.3s" repeatCount="indefinite"/>
-      </circle>
+    <!-- Web expands linearly from 0ms, no triggers needed -->
+    <svg id="pl-web" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <line x1="200" y1="200" x2="200.00" y2="-55.00" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 0ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="349.89" y2="-6.30" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 20ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="442.52" y2="121.20" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 40ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="442.52" y2="278.80" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 60ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="349.89" y2="406.30" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 80ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="200.00" y2="455.00" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 100ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="50.11" y2="406.30" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 120ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="-42.52" y2="278.80" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 140ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="-42.52" y2="121.20" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 160ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="50.11" y2="-6.30" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 180ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="32" stroke="rgba(226,54,54,0.55)" stroke-width="0.55" fill="none" stroke-dasharray="201.1" stroke-dashoffset="201.1" style="animation:wd .5s 200ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="65" stroke="rgba(226,54,54,0.49)" stroke-width="0.5" fill="none" stroke-dasharray="408.4" stroke-dashoffset="408.4" style="animation:wd .5s 265ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="102" stroke="rgba(226,54,54,0.43)" stroke-width="0.45" fill="none" stroke-dasharray="640.9" stroke-dashoffset="640.9" style="animation:wd .5s 330ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="143" stroke="rgba(226,54,54,0.37)" stroke-width="0.4" fill="none" stroke-dasharray="898.5" stroke-dashoffset="898.5" style="animation:wd .5s 395ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="185" stroke="rgba(226,54,54,0.31)" stroke-width="0.35" fill="none" stroke-dasharray="1162.4" stroke-dashoffset="1162.4" style="animation:wd .5s 460ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="228" stroke="rgba(226,54,54,0.25)" stroke-width="0.3" fill="none" stroke-dasharray="1432.6" stroke-dashoffset="1432.6" style="animation:wd .5s 525ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <path d="M200.00,168.00 Q208.60,173.52 218.81,174.11" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 620ms ease forwards"/>
+      <path d="M218.81,174.11 Q222.52,183.64 230.43,190.11" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 632ms ease forwards"/>
+      <path d="M230.43,190.11 Q227.84,200.00 230.43,209.89" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 644ms ease forwards"/>
+      <path d="M230.43,209.89 Q222.52,216.36 218.81,225.89" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 656ms ease forwards"/>
+      <path d="M218.81,225.89 Q208.60,226.48 200.00,232.00" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 668ms ease forwards"/>
+      <path d="M200.00,232.00 Q191.40,226.48 181.19,225.89" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 680ms ease forwards"/>
+      <path d="M181.19,225.89 Q177.48,216.36 169.57,209.89" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 692ms ease forwards"/>
+      <path d="M169.57,209.89 Q172.16,200.00 169.57,190.11" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 704ms ease forwards"/>
+      <path d="M169.57,190.11 Q177.48,183.64 181.19,174.11" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 716ms ease forwards"/>
+      <path d="M181.19,174.11 Q191.40,173.52 200.00,168.00" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 728ms ease forwards"/>
+      <path d="M200.00,135.00 Q217.47,146.22 238.21,147.41" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 655ms ease forwards"/>
+      <path d="M238.21,147.41 Q245.75,166.76 261.82,179.91" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 667ms ease forwards"/>
+      <path d="M261.82,179.91 Q256.55,200.00 261.82,220.09" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 679ms ease forwards"/>
+      <path d="M261.82,220.09 Q245.75,233.24 238.21,252.59" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 691ms ease forwards"/>
+      <path d="M238.21,252.59 Q217.47,253.78 200.00,265.00" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 703ms ease forwards"/>
+      <path d="M200.00,265.00 Q182.53,253.78 161.79,252.59" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 715ms ease forwards"/>
+      <path d="M161.79,252.59 Q154.25,233.24 138.18,220.09" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 727ms ease forwards"/>
+      <path d="M138.18,220.09 Q143.45,200.00 138.18,179.91" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 739ms ease forwards"/>
+      <path d="M138.18,179.91 Q154.25,166.76 161.79,147.41" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 751ms ease forwards"/>
+      <path d="M161.79,147.41 Q182.53,146.22 200.00,135.00" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 763ms ease forwards"/>
+      <path d="M200.00,98.00 Q227.42,115.60 259.95,117.48" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 690ms ease forwards"/>
+      <path d="M259.95,117.48 Q271.79,147.84 297.01,168.48" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 702ms ease forwards"/>
+      <path d="M297.01,168.48 Q288.74,200.00 297.01,231.52" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 714ms ease forwards"/>
+      <path d="M297.01,231.52 Q271.79,252.16 259.95,282.52" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 726ms ease forwards"/>
+      <path d="M259.95,282.52 Q227.42,284.40 200.00,302.00" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 738ms ease forwards"/>
+      <path d="M200.00,302.00 Q172.58,284.40 140.05,282.52" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 750ms ease forwards"/>
+      <path d="M140.05,282.52 Q128.21,252.16 102.99,231.52" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 762ms ease forwards"/>
+      <path d="M102.99,231.52 Q111.26,200.00 102.99,168.48" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 774ms ease forwards"/>
+      <path d="M102.99,168.48 Q128.21,147.84 140.05,117.48" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 786ms ease forwards"/>
+      <path d="M140.05,117.48 Q172.58,115.60 200.00,98.00" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 798ms ease forwards"/>
+      <path d="M200.00,57.00 Q238.44,81.68 284.05,84.31" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 725ms ease forwards"/>
+      <path d="M284.05,84.31 Q300.65,126.87 336.00,155.81" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 737ms ease forwards"/>
+      <path d="M336.00,155.81 Q324.41,200.00 336.00,244.19" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 749ms ease forwards"/>
+      <path d="M336.00,244.19 Q300.65,273.13 284.05,315.69" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 761ms ease forwards"/>
+      <path d="M284.05,315.69 Q238.44,318.32 200.00,343.00" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 773ms ease forwards"/>
+      <path d="M200.00,343.00 Q161.56,318.32 115.95,315.69" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 785ms ease forwards"/>
+      <path d="M115.95,315.69 Q99.35,273.13 64.00,244.19" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 797ms ease forwards"/>
+      <path d="M64.00,244.19 Q75.59,200.00 64.00,155.81" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 809ms ease forwards"/>
+      <path d="M64.00,155.81 Q99.35,126.87 115.95,84.31" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 821ms ease forwards"/>
+      <path d="M115.95,84.31 Q161.56,81.68 200.00,57.00" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 833ms ease forwards"/>
+      <path d="M200.00,15.00 Q249.74,46.93 308.74,50.33" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 760ms ease forwards"/>
+      <path d="M308.74,50.33 Q330.21,105.40 375.95,142.83" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 772ms ease forwards"/>
+      <path d="M375.95,142.83 Q360.95,200.00 375.95,257.17" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 784ms ease forwards"/>
+      <path d="M375.95,257.17 Q330.21,294.60 308.74,349.67" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 796ms ease forwards"/>
+      <path d="M308.74,349.67 Q249.74,353.07 200.00,385.00" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 808ms ease forwards"/>
+      <path d="M200.00,385.00 Q150.26,353.07 91.26,349.67" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 820ms ease forwards"/>
+      <path d="M91.26,349.67 Q69.79,294.60 24.05,257.17" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 832ms ease forwards"/>
+      <path d="M24.05,257.17 Q39.05,200.00 24.05,142.83" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 844ms ease forwards"/>
+      <path d="M24.05,142.83 Q69.79,105.40 91.26,50.33" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 856ms ease forwards"/>
+      <path d="M91.26,50.33 Q150.26,46.93 200.00,15.00" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 868ms ease forwards"/>
+      <path d="M200.00,-28.00 Q261.30,11.35 334.02,15.54" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 795ms ease forwards"/>
+      <path d="M334.02,15.54 Q360.48,83.41 416.84,129.54" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 807ms ease forwards"/>
+      <path d="M416.84,129.54 Q398.36,200.00 416.84,270.46" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 819ms ease forwards"/>
+      <path d="M416.84,270.46 Q360.48,316.59 334.02,384.46" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 831ms ease forwards"/>
+      <path d="M334.02,384.46 Q261.30,388.65 200.00,428.00" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 843ms ease forwards"/>
+      <path d="M200.00,428.00 Q138.70,388.65 65.98,384.46" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 855ms ease forwards"/>
+      <path d="M65.98,384.46 Q39.52,316.59 -16.84,270.46" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 867ms ease forwards"/>
+      <path d="M-16.84,270.46 Q1.64,200.00 -16.84,129.54" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 879ms ease forwards"/>
+      <path d="M-16.84,129.54 Q39.52,83.41 65.98,15.54" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 891ms ease forwards"/>
+      <path d="M65.98,15.54 Q138.70,11.35 200.00,-28.00" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 903ms ease forwards"/>
+      <circle cx="200" cy="200" r="4" fill="#e23636" style="animation:dotP .65s .9s ease-in-out infinite"/>
     </svg>
-    <div id="preloader-text">INITIALIZING SYSTEM...</div>
-    <div id="preloader-bar"><div id="preloader-bar-fill"></div></div>
+
+    <!-- Comic elements — pop into existence (comicPop), staggered burst -->
+    <div class="pk" style="top:9%;right:8%;font-size:clamp(54px,8.5vw,88px);color:#e23636;--r:-9deg;--d:.2s;text-shadow:3px 0 #00eeff,-3px 0 #ff00aa">THWIP!</div>
+    <div class="pk" style="top:7%;left:6%;font-size:clamp(38px,5.5vw,58px);color:#e2e2e2;--r:13deg;--d:.25s">POW!</div>
+    <div class="pk" style="top:42%;left:4%;font-size:clamp(26px,3.5vw,40px);color:#e23636;--r:-7deg;--d:.41s">SNAP!</div>
+    <div class="pk" style="bottom:21%;right:7%;font-size:clamp(30px,4vw,46px);color:#e2e2e2;--r:10deg;--d:.34s">CRACK!</div>
+    <div class="pk" style="bottom:20%;left:5%;font-size:clamp(22px,3vw,36px);color:#e23636;--r:16deg;--d:.55s">THWAK!</div>
+    <div class="pk" style="top:22%;right:6%;font-size:clamp(9px,1vw,12px);font-family:monospace;font-weight:400;letter-spacing:.2em;color:rgba(226,226,226,.4);--r:-2deg;--d:.62s">YOUR NEIGHBORHOOD ENGINEER</div>
+    <div class="pk" style="bottom:12%;right:8%;font-size:clamp(8px,.9vw,11px);font-family:monospace;font-weight:400;letter-spacing:.22em;color:rgba(226,54,54,.45);--r:1deg;--d:.74s">/// WEB_FULLY_DEPLOYED ///</div>
+    <div class="pk" style="top:60%;right:5%;font-size:clamp(18px,2.5vw,32px);color:#e2e2e2;--r:-14deg;--d:.46s">WHAM!</div>
   </div>
 
   <!-- CUSTOM CURSOR -->
@@ -374,15 +544,15 @@
 
            <!-- Stacked Info Right (Reference Style) -->
            <div class="flex flex-col items-end gap-1 text-[10px] md:text-xs lg:text-sm font-mono-custom tracking-widest uppercase text-[#e2e2e2] pointer-events-auto">
-              <span data-scramble="BARI, ITALY / REMOTE" data-scramble="BARI, ITALY / REMOTE" class="hover:text-[#ab8885] transition-colors cursor-default">BARI, ITALY / REMOTE</span>
-              <span data-scramble="MISSION STATUS: FULLY OPERATIONAL" data-scramble="MISSION STATUS: FULLY OPERATIONAL" class="hover:text-[#ab8885] transition-colors cursor-default">MISSION STATUS: FULLY OPERATIONAL</span>
+              <span data-scramble="BARI, ITALY / REMOTE" class="cursor-default">BARI, ITALY / REMOTE</span>
+              <span data-scramble="MISSION STATUS: FULLY OPERATIONAL" class="cursor-default">MISSION STATUS: FULLY OPERATIONAL</span>
            </div>
         </div>
 
         <!-- Hero Video Background -->
         <div class="hero-video absolute inset-0 z-0 overflow-hidden pointer-events-none scale-100 origin-center">
            <video class="w-full h-full object-cover opacity-60" src="./assets/video_random/video1.mp4" autoplay loop muted playsinline></video>
-           <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-[#000000]"></div>
+           <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.1) 60%, #000 100%);"></div>
         </div>
 
         <!-- LAYER 2: The Cinematic Ticker Title -->
@@ -446,28 +616,28 @@ and visuals that actually leave a mark.
          <h2 class="gsap-title text-4xl md:text-6xl lg:text-[5vw] font-bold uppercase tracking-tighter text-[#e2e2e2] leading-[0.9]">WITH GREAT POWER...</h2>
       </div>
 
-      <div class="border-t border-l border-[#5b403d] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full bg-black/80 backdrop-blur-md">
-         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#111] transition-colors group relative overflow-hidden cursor-pointer">
+      <div class="border-t border-l border-[#e23636]/20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full">
+         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#0e0e0e] transition-colors group relative overflow-hidden cursor-pointer">
             <span class="font-normal text-sm lg:text-base text-[#ab8885] font-mono-custom group-hover:text-[#e23636] transition-colors relative z-10">01 //</span>
             <h3 class="text-3xl lg:text-4xl font-bold uppercase text-[#e2e2e2] relative z-10">Creative<br/>Coding</h3>
          </div>
-         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#111] transition-colors group relative overflow-hidden cursor-pointer">
+         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#0e0e0e] transition-colors group relative overflow-hidden cursor-pointer">
             <span class="font-normal text-sm lg:text-base text-[#ab8885] font-mono-custom group-hover:text-[#e23636] transition-colors relative z-10">02 //</span>
             <h3 class="text-3xl lg:text-4xl font-bold uppercase text-[#e2e2e2] relative z-10">Web App<br/>Dev</h3>
          </div>
-         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#111] transition-colors group relative overflow-hidden cursor-pointer">
+         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#0e0e0e] transition-colors group relative overflow-hidden cursor-pointer">
             <span class="font-normal text-sm lg:text-base text-[#ab8885] font-mono-custom group-hover:text-[#e23636] transition-colors relative z-10">03 //</span>
             <h3 class="text-3xl lg:text-4xl font-bold uppercase text-[#e2e2e2] relative z-10">Software Engineering<br/><span class="text-xl text-[#ab8885]">(PoliBa)</span></h3>
          </div>
-         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#111] transition-colors group relative overflow-hidden cursor-pointer">
+         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#0e0e0e] transition-colors group relative overflow-hidden cursor-pointer">
             <span class="font-normal text-sm lg:text-base text-[#ab8885] font-mono-custom group-hover:text-[#e23636] transition-colors relative z-10">04 //</span>
             <h3 class="text-3xl lg:text-4xl font-bold uppercase text-[#e2e2e2] relative z-10">Computer<br/>Graphics</h3>
          </div>
-         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#111] transition-colors group relative overflow-hidden cursor-pointer">
+         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#0e0e0e] transition-colors group relative overflow-hidden cursor-pointer">
             <span class="font-normal text-sm lg:text-base text-[#ab8885] font-mono-custom group-hover:text-[#e23636] transition-colors relative z-10">05 //</span>
             <h3 class="text-3xl lg:text-4xl font-bold uppercase text-[#e2e2e2] relative z-10">AI<br/>Engineering</h3>
          </div>
-         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#111] transition-colors group relative overflow-hidden cursor-pointer">
+         <div class="brutal-grid-item skill-shard p-10 lg:p-14 flex flex-col gap-10 hover:bg-[#0e0e0e] transition-colors group relative overflow-hidden cursor-pointer">
            <span class="font-normal text-sm lg:text-base text-[#ab8885] font-mono-custom group-hover:text-[#e23636] transition-colors relative z-10">06 //</span>
            <h3 class="text-3xl lg:text-4xl font-bold uppercase text-[#e2e2e2] relative z-10">TouchDesigner<br/>Arch</h3>
          </div>
@@ -507,64 +677,49 @@ and visuals that actually leave a mark.
      </div>
   </section>
 
-  <!-- SECTION 5: STUDIO / GALLERY (Wrapped in massive z-20 blocker to crush GSAP gap) -->
+  <!-- SECTION 5: STUDIO / GALLERY (Title section isolated to scroll away naturally) -->
   <div class="w-full relative z-20 bg-[#000] -mt-[2px] pt-[2px]">
-      <section class="engineering-gallery w-full px-4 md:px-12 pt-[10vh] pb-[40vh] relative z-10 max-w-screen-2xl mx-auto">
+      <section class="engineering-gallery w-full px-4 md:px-12 pt-[10vh] pb-[10vh] relative z-10 max-w-screen-2xl mx-auto">
         <div class="flex flex-col items-start gap-4 z-10 lg:pr-12 mb-8">
            <span class="font-mono-custom text-[#e23636] text-sm md:text-base uppercase tracking-widest block mb-2">/ ORIGINS</span>
            <h2 class="gsap-title text-4xl md:text-6xl lg:text-[5vw] font-bold uppercase tracking-tighter text-[#e2e2e2] leading-[0.9]">ENGINEERING<br/>DIGITAL EXPERIENCES.</h2>
         </div>
-
-        <div class="relative w-full mt-[15vh] mb-[15vh] min-h-[100vh] max-w-7xl mx-auto" id="engineering-matrix">
-            
-            <!-- Dynamic SVG Web Canvas (Overlay) -->
-            <svg id="spider-web-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none"></svg>
-            
-            <!-- Clean 2x2 Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 md:gap-x-32 gap-y-32 md:gap-y-[15vh] w-full relative z-10 items-center px-4 md:px-8">
-               
-               <!-- Row 1 -->
-               <!-- Item 1: Left (Goes Down) -->
-               <div class="spider-node w-[75%] lg:w-[65%] relative mr-auto" data-speed="1.2">
-                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/giocoGianni.mp4" class="gallery-media" autoplay loop muted playsinline></video>
-               </div>
-               <!-- Item 2: Right (Goes Up) -->
-               <div class="spider-node w-[75%] lg:w-[65%] relative ml-auto" data-speed="-1.2">
-                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/toucch1.mp4" class="gallery-media" autoplay loop muted playsinline></video>
-               </div>
-
-               <!-- Row 2 -->
-               <!-- Item 3: Left (Goes Down) -->
-               <div class="spider-node w-[75%] lg:w-[65%] relative mr-auto" data-speed="1.2">
-                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch2.mp4" class="gallery-media" autoplay loop muted playsinline></video>
-               </div>
-               <!-- Item 4: Right (Goes Up) -->
-               <div class="spider-node w-[75%] lg:w-[65%] relative ml-auto" data-speed="-1.2">
-                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch3.mp4" class="gallery-media" autoplay loop muted playsinline></video>
-               </div>
-
-               <!-- Row 3 -->
-               <!-- Item 5: Left (Goes Down) -->
-               <div class="spider-node w-[75%] lg:w-[65%] relative mr-auto" data-speed="1.2">
-                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch4.mp4" class="gallery-media" autoplay loop muted playsinline></video>
-               </div>
-               <!-- Item 6: Right (Goes Up) -->
-               <div class="spider-node w-[75%] lg:w-[65%] relative ml-auto" data-speed="-1.2">
-                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touchClip.mp4" class="gallery-media" autoplay loop muted playsinline></video>
-               </div>
-
-               <!-- Row 4 -->
-               <!-- Item 7: Left (Goes Down) -->
-               <div class="spider-node w-[75%] lg:w-[65%] relative mr-auto" data-speed="1.2">
-                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/girassoliClip.mp4" class="gallery-media" autoplay loop muted playsinline></video>
-               </div>
-               <!-- Item 8: Right (Goes Up) -->
-               <div class="spider-node w-[75%] lg:w-[65%] relative ml-auto" data-speed="-1.2">
-                  <img src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/giocoGianni2.jpeg" class="gallery-media" alt="Project"/>
-               </div>
-            </div>
-        </div>
       </section>
+  </div>
+
+  <!-- SECTION 5.5: HORIZONTAL NEURAL TRACK (Pins ONLY when it hits the top, hiding the title, identical to Multiverse) -->
+  <section class="neural-vault-container relative w-full h-[100vh] flex items-center bg-[#000] overflow-hidden z-20">
+      
+      <!-- Dynamic SVG Web Canvas -->
+      <svg id="spider-web-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none"></svg>
+      
+      <div class="neural-track flex flex-row items-center gap-16 lg:gap-24 w-max px-[10vw] relative z-10 h-full">
+         <div class="spider-node w-[70vw] lg:w-[35vw] aspect-[16/10] flex-shrink-0 relative">
+            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/giocoGianni.mp4" class="gallery-media object-cover w-full h-full border border-black/20" autoplay loop muted playsinline></video>
+         </div>
+         <div class="spider-node w-[70vw] lg:w-[35vw] aspect-[16/10] flex-shrink-0 relative">
+            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/toucch1.mp4" class="gallery-media object-cover w-full h-full border border-black/20" autoplay loop muted playsinline></video>
+         </div>
+         <div class="spider-node w-[70vw] lg:w-[35vw] aspect-[16/10] flex-shrink-0 relative">
+            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch2.mp4" class="gallery-media object-cover w-full h-full border border-black/20" autoplay loop muted playsinline></video>
+         </div>
+         <div class="spider-node w-[70vw] lg:w-[35vw] aspect-[16/10] flex-shrink-0 relative">
+            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch3.mp4" class="gallery-media object-cover w-full h-full border border-black/20" autoplay loop muted playsinline></video>
+         </div>
+         <div class="spider-node w-[70vw] lg:w-[35vw] aspect-[16/10] flex-shrink-0 relative">
+            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch4.mp4" class="gallery-media object-cover w-full h-full border border-black/20" autoplay loop muted playsinline></video>
+         </div>
+         <div class="spider-node w-[70vw] lg:w-[35vw] aspect-[16/10] flex-shrink-0 relative">
+            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touchClip.mp4" class="gallery-media object-cover w-full h-full border border-black/20" autoplay loop muted playsinline></video>
+         </div>
+         <div class="spider-node w-[70vw] lg:w-[35vw] aspect-[16/10] flex-shrink-0 relative">
+            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/girassoliClip.mp4" class="gallery-media object-cover w-full h-full border border-black/20" autoplay loop muted playsinline></video>
+         </div>
+         <div class="spider-node w-[70vw] lg:w-[35vw] aspect-[16/10] flex-shrink-0 relative">
+            <img src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/giocoGianni2.jpeg" class="gallery-media object-cover w-full h-full border border-black/20" alt="Project"/>
+         </div>
+      </div>
+  </section>
 
   <!-- SECTION 6: ARCHIVE -->
   <section class="w-full mb-[35vh] relative z-10">
@@ -604,7 +759,7 @@ and visuals that actually leave a mark.
            <!-- BG Image/Video -->
            <div class="archive-bg-container absolute inset-0 z-0 pointer-events-none overflow-hidden">
               <div class="archive-bg-overlay absolute inset-0 z-10 transition-colors duration-500"></div>
-              <img src="./assets/progetti/immagine_progetto_sonic-diffusion.jpeg" class="w-full h-full object-cover grayscale scale-[1.02]" alt="Sonic Diffusion" />
+              <video src="./assets/sezione_progetti/Sonic Diffusion.mp4" class="w-full h-full object-cover scale-[1.05]" autoplay loop muted playsinline></video>
            </div>
 
            <!-- Number -->
@@ -627,7 +782,7 @@ and visuals that actually leave a mark.
            <!-- BG Image/Video -->
            <div class="archive-bg-container absolute inset-0 z-0 pointer-events-none overflow-hidden">
               <div class="archive-bg-overlay absolute inset-0 z-10 transition-colors duration-500"></div>
-              <video src="./assets/video_random/video_progetto_Sphere.mp4" class="w-full h-full object-cover scale-[1.05]" autoplay loop muted playsinline></video>
+              <video src="./assets/sezione_progetti/Sphere Engine.mp4" class="w-full h-full object-cover scale-[1.05]" autoplay loop muted playsinline></video>
            </div>
 
            <!-- Number -->
@@ -650,7 +805,7 @@ and visuals that actually leave a mark.
            <!-- BG Image/Video -->
            <div class="archive-bg-container absolute inset-0 z-0 pointer-events-none overflow-hidden">
               <div class="archive-bg-overlay absolute inset-0 z-10 transition-colors duration-500"></div>
-              <video src="./assets/video_random/video_progetto_Web-Sling City.mp4" class="w-full h-full object-cover scale-[1.05]" autoplay loop muted playsinline></video>
+              <video src="./assets/sezione_progetti/Web-Sling City.mp4" class="w-full h-full object-cover scale-[1.05]" autoplay loop muted playsinline></video>
            </div>
 
            <!-- Number -->
@@ -673,7 +828,7 @@ and visuals that actually leave a mark.
            <!-- BG Image/Video -->
            <div class="archive-bg-container absolute inset-0 z-0 pointer-events-none overflow-hidden">
               <div class="archive-bg-overlay absolute inset-0 z-10 transition-colors duration-500"></div>
-              <img src="./assets/progetti/immagine_progetto_clearwear.png" class="w-full h-full object-cover scale-[1.02] filter hue-rotate-180" alt="Neuromorph" />
+              <video src="./assets/sezione_progetti/Neuromorph System.mp4" class="w-full h-full object-cover scale-[1.05]" autoplay loop muted playsinline></video>
            </div>
 
            <!-- Number -->
@@ -696,7 +851,7 @@ and visuals that actually leave a mark.
            <!-- BG Image/Video -->
            <div class="archive-bg-container absolute inset-0 z-0 pointer-events-none overflow-hidden">
               <div class="archive-bg-overlay absolute inset-0 z-10 transition-colors duration-500"></div>
-              <img src="./assets/progetti/immagine_progetto_sonic-diffusion.jpeg" class="w-full h-full object-cover scale-[1.02] filter invert opacity-50" alt="EduQuest" />
+              <video src="./assets/sezione_progetti/EduQuest 2D.mp4" class="w-full h-full object-cover scale-[1.05]" autoplay loop muted playsinline></video>
            </div>
 
            <!-- Number -->
@@ -719,7 +874,7 @@ and visuals that actually leave a mark.
   <!-- SECTION 7: TERMINAL -->
    <section class="w-full px-4 md:px-12 mb-[35vh] relative max-w-screen-2xl mx-auto z-10" id="terminal-section">
       <div class="border border-[#e23636] p-1 md:p-2 bg-[#0e0e0e] w-full shadow-[0_0_30px_rgba(226,54,54,0.1)]">
-         <div class="bg-[#131313] p-8 md:p-16 lg:p-24 text-sm md:text-base lg:text-lg font-mono-custom w-full min-h-[600px] flex flex-col justify-center relative overflow-hidden">
+         <div class="bg-[#111] p-8 md:p-16 lg:p-24 text-sm md:text-base lg:text-lg font-mono-custom w-full min-h-[600px] flex flex-col justify-center relative overflow-hidden">
             
             <!-- Decorative Grid inside Terminal -->
             <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-size: 40px 40px; background-image: linear-gradient(to right, #e23636 1px, transparent 1px), linear-gradient(to bottom, #e23636 1px, transparent 1px);"></div>
@@ -837,9 +992,9 @@ and visuals that actually leave a mark.
 
   <!-- FOOTER WRAPPER: RED BACKGROUND -->
   <div class="w-full bg-[#e23636] py-8 px-4 md:px-12">
-     <footer class="max-w-[1400px] mx-auto flex justify-between items-center py-6 px-10 bg-[#080808] z-10 relative font-mono-custom text-[10px] text-white/70 rounded-[20px] md:rounded-[30px]">
+     <footer class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 py-6 px-4 md:px-10 bg-[#000] z-10 relative font-mono-custom text-[10px] text-white/70 rounded-[20px] md:rounded-[30px] text-center md:text-left">
        <span data-scramble="SYSTEM_STATUS: NOMINAL // © 2024 NEIGHBORHOOD_ENGINEER">SYSTEM_STATUS: NOMINAL // © 2024 NEIGHBORHOOD_ENGINEER</span>
-       <div class="flex gap-8 uppercase tracking-widest font-bold">
+       <div class="flex flex-wrap justify-center gap-4 md:gap-8 uppercase tracking-widest font-bold">
           <a href="https://www.linkedin.com/in/francesco-lillo-a106bb352" target="_blank" class="link-underline">LINKEDIN</a>
           <a href="https://github.com/flillo6" target="_blank" class="link-underline">GITHUB</a>
           <a href="https://www.instagram.com/fraanzesco?igsh=cmluN29ybmM0Mmtp&utm_source=qr" target="_blank" class="link-underline">INSTAGRAM</a>
@@ -863,15 +1018,22 @@ and visuals that actually leave a mark.
         // PRELOADER — dismiss after 2s or when page is ready
         // ============================================================
         const preloader = document.getElementById('preloader');
-        function dismissPreloader() {
-          preloader.classList.add('hidden');
-          document.body.style.overflow = '';
+        
+                                function dismissPreloader() {
+          // Web has been expanding since 0ms via CSS.
+          // At ~1500ms it covers the viewport completely.
+          // Fade out the preloader cleanly.
+          preloader.style.transition = 'opacity 0.15s ease';
+          preloader.style.opacity = '0';
+          setTimeout(() => {
+            preloader.classList.add('hidden');
+            document.body.style.overflow = '';
+          }, 160);
         }
-        document.body.style.overflow = 'hidden'; // lock scroll during load
-        setTimeout(dismissPreloader, 2000);
+        setTimeout(dismissPreloader, 1520);
 
         // ============================================================
-        // CUSTOM CURSOR — Solo dot rosso, outline su hover
+        // CUSTOM CURSOR — mix-blend-mode:difference lens on specific targets
         // ============================================================
         const dot = document.getElementById('cursor-dot');
         const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
@@ -880,10 +1042,11 @@ and visuals that actually leave a mark.
             dot.style.left = e.clientX + 'px';
             dot.style.top  = e.clientY + 'px';
           });
-          document.querySelectorAll('a, button, .skill-shard, .archive-item, .gallery-media, [data-scramble]')
+          // Archive items + scramble texts → lens blend effect
+          document.querySelectorAll('.archive-item, [data-scramble]')
             .forEach(el => {
-              el.addEventListener('mouseenter', () => dot.classList.add('is-hovering'));
-              el.addEventListener('mouseleave', () => dot.classList.remove('is-hovering'));
+              el.addEventListener('mouseenter', () => dot.classList.add('is-blend'));
+              el.addEventListener('mouseleave', () => dot.classList.remove('is-blend'));
             });
         } else {
           if (dot) dot.style.display = 'none';
@@ -963,7 +1126,7 @@ and visuals that actually leave a mark.
         const videoObserver = new IntersectionObserver((entries) => {
            entries.forEach(entry => {
               if (entry.isIntersecting) {
-                 entry.target.play().catch(e => console.log('Auto-play caught', e));
+                 entry.target.play().catch(() => {});
               } else {
                  entry.target.pause();
               }
@@ -1010,7 +1173,7 @@ and visuals that actually leave a mark.
         // Disabled on mobile for performance
         // ==========================================
         const gallerySection = document.querySelector('.engineering-gallery');
-        const parallaxNodes = document.querySelectorAll('[data-speed]');
+        const parallaxNodes = document.querySelectorAll('[data-speed]:not(.spider-node)');
         const isMobile = window.innerWidth < 768;
 
         if (!isMobile) {
@@ -1029,87 +1192,7 @@ and visuals that actually leave a mark.
         }
 
 
-        // ==========================================
-        // DYNAMIC SPIDER WEB GENERATOR (GSAP TICKER)
-        // Disabled on mobile
-        // ==========================================
-        const spiderWebCanvas = document.getElementById('spider-web-canvas');
-        const spiderNodes = document.querySelectorAll('.spider-node');
-        const engineeringMatrix = document.getElementById('engineering-matrix');
 
-        if (isMobile && spiderWebCanvas) { spiderWebCanvas.style.display = 'none'; }
-
-        function drawSpiderWeb() {
-            if (isMobile || !spiderWebCanvas || spiderNodes.length === 0) return;
-            
-            // Clear previous lines
-            spiderWebCanvas.innerHTML = '';
-            
-            // Get boundaries and node centers
-            const containerRect = engineeringMatrix.getBoundingClientRect();
-            const points = [];
-            
-            spiderNodes.forEach(node => {
-                const rect = node.getBoundingClientRect();
-                const centerX = (rect.left + rect.width / 2) - containerRect.left;
-                const centerY = (rect.top + rect.height / 2) - containerRect.top;
-                points.push({ x: centerX, y: centerY });
-            });
-
-            // Iterate and draw lines
-            for (let i = 0; i < points.length; i++) {
-                // Connect to next node (Linear chain)
-                if (i < points.length - 1) {
-                    createWebLine(points[i].x, points[i].y, points[i+1].x, points[i+1].y, 0.5);
-                }
-                // Connect to node + 3 (Web criss-cross patterns)
-                if (i + 3 < points.length) {
-                    createWebLine(points[i].x, points[i].y, points[i+3].x, points[i+3].y, 0.3);
-                }
-                // Connect to central node 5 acting as a Hub
-                if (i !== 4) {
-                    createWebLine(points[i].x, points[i].y, points[4].x, points[4].y, 0.15);
-                }
-            }
-        }
-
-        function createWebLine(x1, y1, x2, y2, customAlpha) {
-            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            
-            // Calculate distance between elements to simulate tension
-            const dx = x2 - x1;
-            const dy = y2 - y1;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            
-            // Compute middle point
-            const midX = (x1 + x2) / 2;
-            
-            // Sag physics: the closer they are, the more the thread sags downwards (gravity).
-            // When pulled apart by the intense parallax, it tightens (sag -> 0).
-            let sagAmount = 180 - (dist * 0.15);
-            if(sagAmount < 0) sagAmount = 0; // Taut thread! no sag.
-            
-            const midY = ((y1 + y2) / 2) + sagAmount; // Gravity pulls Y downwards (positive)
-            
-            // Draw a Quadratic Bezier curve
-            const dStr = `M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`;
-            
-            path.setAttribute('d', dStr);
-            path.setAttribute('fill', 'none');
-            path.setAttribute('stroke', '#e23636'); // Red Spidey threads
-            path.setAttribute('stroke-width', '1.5');
-            path.setAttribute('opacity', customAlpha.toString());
-            path.setAttribute('stroke-dasharray', '6 4'); // Technical dashes
-            
-            // Glow effect for web realism
-            path.style.filter = "drop-shadow(0px 4px 6px rgba(226, 54, 54, 0.3))";
-            
-            spiderWebCanvas.appendChild(path);
-        }
-
-        // Add to ticker so it redraws 60fps while GSAP moves the elements
-        gsap.ticker.add(drawSpiderWeb);
-        window.addEventListener('resize', drawSpiderWeb);
 
         // 1.5. Infinite Cinematic Ticker (Independent from scroll)
         gsap.to('.marquee-content', {
@@ -1166,6 +1249,96 @@ and visuals that actually leave a mark.
            ease: "power1.inOut"
         }, 0);
 
+        // ==========================================
+        // HORIZONTAL TRACK & DYNAMIC SPIDER WEB
+        // ==========================================
+        const spiderWebCanvas = document.getElementById('spider-web-canvas');
+        const spiderNodes = document.querySelectorAll('.spider-node');
+        const vaultContainer = document.querySelector('.neural-vault-container');
+        const neuralTrack = document.querySelector('.neural-track');
+
+        if (isMobile && spiderWebCanvas) { spiderWebCanvas.style.display = 'none'; }
+
+        if (!isMobile && spiderWebCanvas && spiderNodes.length > 0 && neuralTrack && vaultContainer) {
+            
+            const NS = 'http://www.w3.org/2000/svg';
+            const CONN = Array.from({length: spiderNodes.length - 1}, (_, i) => [i, i+1]);
+            
+            const paths = CONN.map(() => {
+                const p = document.createElementNS(NS, 'path');
+                p.setAttribute('fill', 'none');
+                p.setAttribute('stroke', '#ffffff');
+                p.setAttribute('stroke-width', '2.5'); /* Increased visibility */
+                // p.setAttribute('stroke-dasharray', '8 6'); // Rimossa tratteggiatura
+                p.style.opacity = "0.75"; /* Increased opacity */
+                p.style.filter = "drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.9))";
+                spiderWebCanvas.appendChild(p);
+                return p;
+            });
+
+            function getCenter(el, container) {
+                const r = el.getBoundingClientRect();
+                const c = container.getBoundingClientRect();
+                return { x: r.left + r.width/2 - c.left, y: r.top + r.height/2 - c.top };
+            }
+
+            let sagVelocityBounce = 0;
+            function updateNeuralWeb() {
+                const pts = Array.from(spiderNodes).map(n => getCenter(n, vaultContainer));
+                CONN.forEach(([iA, iB], idx) => {
+                    const pa = pts[iA], pb = pts[iB];
+                    if (!pa || !pb) return;
+                    const dx = pb.x - pa.x, dy = pb.y - pa.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    let sag = Math.max(0, 100 - (dist * 0.1));
+                    sag += sagVelocityBounce; 
+                    
+                    const midX = (pa.x + pb.x) / 2;
+                    const midY = ((pa.y + pb.y) / 2) + sag;
+                    
+                    const dStr = `M ${pa.x.toFixed(1)} ${pa.y.toFixed(1)} Q ${midX.toFixed(1)} ${midY.toFixed(1)} ${pb.x.toFixed(1)} ${pb.y.toFixed(1)}`;
+                    paths[idx].setAttribute('d', dStr);
+                });
+            }
+
+            let valWidth = neuralTrack.scrollWidth - window.innerWidth + 200; 
+            let extraScrollGallery = window.innerWidth * 2; 
+            
+            const neuralTL = gsap.timeline({
+                scrollTrigger: {
+                    trigger: vaultContainer, 
+                    start: 'top top',
+                    end: "+=" + extraScrollGallery,
+                    pin: true,
+                    scrub: 1.5,
+                    anticipatePin: 1,
+                    onUpdate(self) {
+                        const vel = Math.abs(self.getVelocity() || 0);
+                        if (vel > 80 && sagVelocityBounce < 8) {
+                            sagVelocityBounce = Math.min(vel * 0.015, 40);
+                            gsap.to({v: sagVelocityBounce}, {
+                                v: 0, duration: 1.2, ease: 'elastic.out(1, 0.4)',
+                                onUpdate() { sagVelocityBounce = this.targets()[0].v; updateNeuralWeb(); }
+                            });
+                        }
+                        updateNeuralWeb();
+                    }
+                }
+            });
+
+            neuralTL.to(neuralTrack, {
+                x: -valWidth,
+                ease: "none"
+            }, 0);
+
+            window.addEventListener('resize', () => {
+                valWidth = neuralTrack.scrollWidth - window.innerWidth + 200;
+                updateNeuralWeb();
+            });
+            gsap.ticker.add(() => { if (vaultContainer.getBoundingClientRect().width > 0) updateNeuralWeb(); }, true, true);
+        }
+
+
         // 1. Hero Wipe Text Animation (Custom BR-safe Splitizer)
         const descText = document.querySelector('.hero-desc-text');
         if (descText) {
@@ -1201,6 +1374,7 @@ and visuals that actually leave a mark.
         // 2. Multiverse Horizontal GSAP (Enhanced Flow)
         let track = document.querySelector('.multiverse-track');
         // Calculate the translation distance
+        if (!track) return;
         let trackWidth = track.scrollWidth - window.innerWidth; 
         
         // Let's make the text ENTER the screen from the right
@@ -1242,6 +1416,30 @@ and visuals that actually leave a mark.
            }
         });
     }); // END DOMContentLoaded
+
+    // ── Perpetual Spider-Sense Aura (Using Client PNG Asset) ────────────────
+    (function initGalleryAura() {
+      function build(node) {
+        if (node.querySelector('.gal-sense-png')) return;
+        
+        const img = document.createElement('img');
+        img.src = './assets/spidersense4.png';
+        img.className = 'gal-sense-png';
+        img.setAttribute('aria-hidden', 'true');
+        
+        node.style.overflow = 'visible';
+        // Inseriamo il PNG dietro a tutto
+        node.appendChild(img);
+      }
+
+      if (window.innerWidth < 768) return;
+      setTimeout(() => document.querySelectorAll('.spider-node').forEach(build), 500);
+      window.addEventListener('resize', () => {
+         document.querySelectorAll('.gal-sense-png').forEach(el => el.remove());
+         document.querySelectorAll('.spider-node').forEach(build);
+      });
+    })();
+    // ─────────────────────────────────────────────────────────────────────
 
     // =============================================
     // IDEA B: WEB SWING THREAD — Enhanced
@@ -1499,8 +1697,7 @@ and visuals that actually leave a mark.
   // ============================================================
   window.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.skill-shard');
-    if (!cards.length) { console.warn('[Shatter] No .skill-shard cards found'); return; }
-    console.log('[Shatter] Found', cards.length, 'cards');
+    if (!cards.length) return;
 
     cards.forEach(card => {
       const canvas = document.createElement('canvas');
