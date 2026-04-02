@@ -3,24 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>spidey.p</title>
-  <meta name="description" content="your friendly neighborhood engineer">
+  <title>Francesco Lillo | Neighborhood Engineer — Creative Dev Portfolio</title>
+  <meta name="description" content="Francesco Lillo — Software Engineer, Creative Developer & TouchDesigner Artist. Building digital experiences at 60fps.">
 
   <!-- Open Graph / LinkedIn / WhatsApp -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://flillo6.github.io/spidey-portfolio/">
-  <meta property="og:title" content="spidey.p">
-  <meta property="og:description" content="your friendly neighborhood engineer">
-  <!-- PWA / Mobile Identity -->
-  <meta name="application-name" content="spidey.p">
-  <meta name="apple-mobile-web-app-title" content="spidey.p">
-  
-  <!-- Definitive Favicon Fix: Inline SVG Data URI (Layers Icon) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e23636' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'%3E%3C/path%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e23636' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'%3E%3C/path%3E%3C/svg%3E">
+  <meta property="og:title" content="Francesco Lillo | Neighborhood Engineer">
+  <meta property="og:description" content="Software Engineer, Creative Developer & TouchDesigner Artist. Building digital experiences at 60fps.">
+  <meta property="og:image" content="https://flillo6.github.io/spidey-portfolio/assets/og-preview.jpg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Francesco Lillo | Neighborhood Engineer">
   <meta name="twitter:description" content="Software Engineer, Creative Developer & TouchDesigner Artist.">
   <meta name="twitter:image" content="https://flillo6.github.io/spidey-portfolio/assets/og-preview.jpg">
   
@@ -52,6 +47,47 @@
       animation:webExpL 1.65s linear forwards;
       filter:drop-shadow(0 0 5px rgba(226,54,54,.35));
     }
+    @keyframes webExpL{
+      0%  {transform:translate(-50%,-50%) scale(.09);}
+      100%{transform:translate(-50%,-50%) scale(22);}
+    }
+    /* Individual stroke draw */
+    @keyframes wd{to{stroke-dashoffset:0}}
+    @keyframes dotP{
+      0%,100%{r:4} 50%{r:7;opacity:.7}
+    }
+
+    /* Comic elements — pop like a comic panel */
+    .pk{
+      position:absolute; z-index:8;
+      font-family:'Space Grotesk',sans-serif; font-weight:900;
+      text-transform:uppercase; letter-spacing:-.03em; line-height:1;
+      pointer-events:none;
+      opacity:0;
+      transform:scale(2.4) rotate(var(--r));
+      animation:comicPop .3s var(--d) cubic-bezier(.33,1.6,.68,1) forwards;
+    }
+    @keyframes comicPop{
+      0%  {opacity:0; transform:scale(2.4) rotate(var(--r));}
+      15% {opacity:1;}
+      65% {transform:scale(.92) rotate(var(--r));}
+      82% {transform:scale(1.04) rotate(var(--r));}
+      100%{opacity:1; transform:scale(1) rotate(var(--r));}
+    }
+    /* THWIP glitch persist */
+    .pk:first-child{
+      animation:comicPop .3s var(--d) cubic-bezier(.33,1.6,.68,1) forwards,
+                 thwipG .09s .65s steps(1) infinite;
+    }
+    @keyframes thwipG{
+      0%  {text-shadow:3px 0 #00eeff,-3px 0 #ff00aa}
+      33% {text-shadow:-4px 1px #00eeff,4px -1px #ff00aa;transform:scale(1) rotate(-9.5deg) translate(2px,-1px)}
+      66% {text-shadow:2px 0 #f30,-2px 0 #0e6;transform:scale(1) rotate(-8.5deg) translate(-1px,1px)}
+      100%{text-shadow:3px 0 #00eeff,-3px 0 #ff00aa}
+    }
+
+    /* Dismiss */
+    #preloader.hidden{display:none}
     /* ─────────────────────────────────── */
 
 
@@ -64,7 +100,101 @@
 
     
 
-            html.lenis, html.lenis body {
+        /* ============================================================
+       PRELOADER — Web Spinner + Comic Panel (C4+C2)
+    ============================================================ */
+    #preloader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    /* outer comic panel border */
+    
+     }
+    
+    
+    
+    
+    
+    /* Web SVG */
+    #pl-web {
+      position: absolute;
+      width: min(140vw, 140vh); height: min(140vw, 140vh);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+    @keyframes webDraw { to { stroke-dashoffset: 0; } }
+    @keyframes dotPulse {
+      0%,100% { r: 5; opacity: 1; }
+      50% { r: 9; opacity: 0.7; filter: drop-shadow(0 0 8px #e23636); }
+    }
+    /* Comic action texts */
+    .pl-comic-text {
+      position: absolute; z-index: 4;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 900; text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: #e23636;
+      opacity: 0;
+    }
+    #pl-thwip {
+      font-size: clamp(52px, 9vw, 88px);
+      top: 12%; right: 8%;
+      transform: rotate(-10deg) scale(0.7);
+      animation: comicPop 0.25s 0.55s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    .pl-small {
+      font-size: clamp(10px, 1.4vw, 14px) !important;
+      font-family: 'Liberation Mono', monospace !important;
+      font-weight: 400 !important;
+      color: rgba(226,226,226,0.5) !important;
+      letter-spacing: 0.2em !important;
+      bottom: 14%; left: 8%;
+      transform: rotate(0deg) scale(0.9) !important;
+      animation: comicPop 0.2s 0.7s ease forwards !important;
+    }
+    @keyframes comicPop {
+      to { opacity: 1; transform: rotate(-10deg) scale(1); }
+    }
+    /* ink stamp logo */
+    .pl-stamp {
+      position: absolute; z-index: 4;
+      top: 13%; left: 8%;
+      font-family: 'Liberation Mono', monospace;
+      font-size: clamp(13px, 2vw, 18px);
+      font-weight: 700; letter-spacing: 0.1em;
+      color: #000; background: #e23636;
+      padding: 3px 10px;
+      transform: rotate(-4deg) scale(1.3);
+      opacity: 0;
+      animation: stampDrop 0.3s 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    
+    }
+    /* Loading label */
+    #pl-label {
+      position: absolute; bottom: 13%; right: 8%;
+      font-family: 'Liberation Mono', monospace;
+      font-size: 10px; letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(226,226,226,0.4); z-index: 4;
+      
+      opacity: 0;
+    }
+    /* Dismiss animation */
+    #preloader.exploding #pl-web {
+      animation: webBurst 0.45s ease-in forwards !important;
+    }
+    #preloader.exploding #pl-center-dot { display: none; }
+    @keyframes webBurst {
+      from { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+      to   { transform: translate(-50%,-50%) scale(12); opacity: 0; }
+    }
+    #preloader.hidden { display: none; }
+
+    html.lenis, html.lenis body {
       height: auto;
     }
     .lenis.lenis-smooth {
@@ -237,123 +367,43 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(226,54,54,0.3), 0 0 30px rgba(226,54,54,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
     }
 
-    /* =============================================
-       NEURAL VAULT V5: DITKO ELECTRIC AURA
-    ============================================= */
-    .spider-node { 
-      position: relative; 
-      z-index: 10; 
-      margin-bottom: 25vh; /* Enough space to see the webs in the stack gap */
-      width: 70vw; /* Reduced to ensure the zig-zag is visible on mobile sideways */
-      max-width: 760px;
-    }
-    .spider-node:last-child { margin-bottom: 10vh; }
-    .spider-node:nth-child(odd) { align-self: flex-start; margin-left: 5vw; transform: rotate(-1deg); }
-    .spider-node:nth-child(even) { align-self: flex-end; margin-right: 5vw; transform: rotate(1.5deg); }
-
-    .ditko-aura {
-      position: absolute;
-      width: 70px; height: 70px; /* Nano-compact for sp-sense-3.svg */
-      pointer-events: none;
-      z-index: -1; 
-      opacity: 0.6;
-      animation: ditkoAlarm 0.1s steps(2) infinite;
-      transition: opacity 0.3s ease, transform 0.2s ease;
-    }
-    .ditko-aura img { width: 100%; height: auto; display: block; }
-    
-    /* Subtle Jitter Hover Effect */
-    .spider-node:hover .ditko-aura { 
-      opacity: 1; 
-      animation: ditkoAlarmHover 0.06s steps(2) infinite;
-    }
-
-    @keyframes ditkoAlarm {
-      0% { transform: translate(0, 0); }
-      50% { transform: translate(1px, -1px); }
-      100% { transform: translate(-1px, 1px); }
-    }
-    @keyframes ditkoAlarmHover {
-      0% { transform: translate(0, 0) scale(1.1); }
-      50% { transform: translate(2px, -2px) scale(1.1); }
-      100% { transform: translate(-2px, 2px) scale(1.1); }
-    }
-
-    /* Final Precise Flip Logic for sp-sense-3.svg (Native TL) */
-    .aura-tl { top: -35px; left: -35px; }
-    .aura-tr { top: -35px; right: -35px; }
-    .aura-bl { bottom: -35px; left: -35px; }
-    .aura-br { bottom: -35px; right: -35px; }
-
-    /* Flip logic moved to IMG to avoid conflict with 'transform' vibration animations */
-    .aura-tl img { transform: none; }
-    .aura-tr img { transform: scaleX(-1); }
-    .aura-bl img { transform: scaleY(-1); }
-    .aura-br img { transform: scale(-1); }
-
-    /* 🕸️ NEURAL ELASTICITY STYLES (V5.31.0 - Silk Refinement) */
-    .web-line {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.48); /* Soft silk-white as requested */
-      stroke-width: 1.2px; 
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      vector-effect: non-scaling-stroke;
-      pointer-events: none;
-      transition: stroke 0.4s ease;
-    }
-    .spider-node {
-      will-change: transform;
-      z-index: 10; 
-    }
-    #spider-web-canvas {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; 
-      height: 100%;
-      min-height: 1000px; /* Ensure it's never 0 height */
-      pointer-events: none;
-      z-index: 0; 
-      transform: translate3d(0,0,0); /* Forced High-Priority GPU Layer */
-      backface-visibility: hidden;
-      will-change: transform, contents;
-      display: block !important;
-    }
-    .cs-tl { top: -10px; left: -10px; border-top: 2px solid #e23636; border-left: 2px solid #e23636; }
-    .cs-tr { top: -10px; right: -10px; border-top: 2px solid #e23636; border-right: 2px solid #e23636; }
-    .cs-bl { bottom: -10px; left: -10px; border-bottom: 2px solid #e23636; border-left: 2px solid #e23636; }
-    .cs-br { bottom: -10px; right: -10px; border-bottom: 2px solid #e23636; border-right: 2px solid #e23636; }
-
-    /* The jagged lines within corners */
-    .corner-sense::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(45deg, transparent, transparent 2px, #e23636 2px, #e23636 4px);
-      clip-path: polygon(0% 0%, 100% 0%, 100% 5%, 5% 5%, 5% 100%, 0% 100%);
-      animation: cornerTick 0.15s steps(2) infinite;
-    }
-    @keyframes cornerTick {
-      0% { transform: scale(1) translate(0,0); }
-      100% { transform: scale(1.1) translate(2px, -2px); filter: drop-shadow(0 0 5px #ff0000); }
-    }
-
-
     /* ================================
-       HORIZONTAL TICKER
+       PRELOADER
     ================================ */
-    .ticker-container {
-      display: flex;
-      gap: 0;
-      white-space: nowrap;
-      width: fit-content;
-      animation: ticker-scrolling 40s linear infinite;
+    #preloader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
     }
-    @keyframes ticker-scrolling {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #preloader svg { width: 120px; height: 120px; }
+    #preloader-line {
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+      animation: drawWeb 1.4s ease forwards;
     }
-
+    @keyframes drawWeb {
+      to { stroke-dashoffset: 0; }
+    }
+    #preloader-text {
+      font-family: 'Liberation Mono', monospace;
+      font-size: 11px; letter-spacing: 0.3em;
+      color: #e23636; margin-top: 24px;
+      opacity: 0; animation: fadeIn 0.5s 0.9s ease forwards;
+    }
+    #preloader-bar {
+      width: 120px; height: 1px; background: #000;
+      margin-top: 16px; overflow: hidden;
+      opacity: 0; animation: fadeIn 0.3s 0.9s ease forwards;
+    }
+    #preloader-bar-fill {
+      height: 100%; background: #e23636; width: 0%;
+      animation: barFill 1s 0.9s ease forwards;
+    }
+    @keyframes barFill { to { width: 100%; } }
+    @keyframes fadeIn { to { opacity: 1; } }
 
     /* ================================
        CUSTOM CURSOR
@@ -422,7 +472,101 @@
   </style>
   <!-- No Three.js needed - using native Canvas 2D for particles -->
 </head>
-<body class="antialiased selection:bg-[#e23636] selection:text-white w-full overflow-x-hidden">
+<body class="antialiased selection:bg-[#e23636] selection:text-white">
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <!-- Web expands linearly from 0ms, no triggers needed -->
+    <svg id="pl-web" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <line x1="200" y1="200" x2="200.00" y2="-55.00" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 0ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="349.89" y2="-6.30" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 20ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="442.52" y2="121.20" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 40ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="442.52" y2="278.80" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 60ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="349.89" y2="406.30" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 80ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="200.00" y2="455.00" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 100ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="50.11" y2="406.30" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 120ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="-42.52" y2="278.80" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 140ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="-42.52" y2="121.20" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 160ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <line x1="200" y1="200" x2="50.11" y2="-6.30" stroke="#e23636" stroke-width="0.55" stroke-linecap="round" opacity="0.75" stroke-dasharray="260" stroke-dashoffset="260" style="animation:wd .55s 180ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="32" stroke="rgba(226,54,54,0.55)" stroke-width="0.55" fill="none" stroke-dasharray="201.1" stroke-dashoffset="201.1" style="animation:wd .5s 200ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="65" stroke="rgba(226,54,54,0.49)" stroke-width="0.5" fill="none" stroke-dasharray="408.4" stroke-dashoffset="408.4" style="animation:wd .5s 265ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="102" stroke="rgba(226,54,54,0.43)" stroke-width="0.45" fill="none" stroke-dasharray="640.9" stroke-dashoffset="640.9" style="animation:wd .5s 330ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="143" stroke="rgba(226,54,54,0.37)" stroke-width="0.4" fill="none" stroke-dasharray="898.5" stroke-dashoffset="898.5" style="animation:wd .5s 395ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="185" stroke="rgba(226,54,54,0.31)" stroke-width="0.35" fill="none" stroke-dasharray="1162.4" stroke-dashoffset="1162.4" style="animation:wd .5s 460ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <circle cx="200" cy="200" r="228" stroke="rgba(226,54,54,0.25)" stroke-width="0.3" fill="none" stroke-dasharray="1432.6" stroke-dashoffset="1432.6" style="animation:wd .5s 525ms cubic-bezier(.25,.1,.25,1) forwards"/>
+      <path d="M200.00,168.00 Q208.60,173.52 218.81,174.11" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 620ms ease forwards"/>
+      <path d="M218.81,174.11 Q222.52,183.64 230.43,190.11" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 632ms ease forwards"/>
+      <path d="M230.43,190.11 Q227.84,200.00 230.43,209.89" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 644ms ease forwards"/>
+      <path d="M230.43,209.89 Q222.52,216.36 218.81,225.89" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 656ms ease forwards"/>
+      <path d="M218.81,225.89 Q208.60,226.48 200.00,232.00" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 668ms ease forwards"/>
+      <path d="M200.00,232.00 Q191.40,226.48 181.19,225.89" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 680ms ease forwards"/>
+      <path d="M181.19,225.89 Q177.48,216.36 169.57,209.89" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 692ms ease forwards"/>
+      <path d="M169.57,209.89 Q172.16,200.00 169.57,190.11" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 704ms ease forwards"/>
+      <path d="M169.57,190.11 Q177.48,183.64 181.19,174.11" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 716ms ease forwards"/>
+      <path d="M181.19,174.11 Q191.40,173.52 200.00,168.00" stroke="rgba(226,54,54,0.28)" stroke-width="0.28" fill="none" stroke-dasharray="20.8" stroke-dashoffset="20.8" style="animation:wd .18s 728ms ease forwards"/>
+      <path d="M200.00,135.00 Q217.47,146.22 238.21,147.41" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 655ms ease forwards"/>
+      <path d="M238.21,147.41 Q245.75,166.76 261.82,179.91" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 667ms ease forwards"/>
+      <path d="M261.82,179.91 Q256.55,200.00 261.82,220.09" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 679ms ease forwards"/>
+      <path d="M261.82,220.09 Q245.75,233.24 238.21,252.59" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 691ms ease forwards"/>
+      <path d="M238.21,252.59 Q217.47,253.78 200.00,265.00" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 703ms ease forwards"/>
+      <path d="M200.00,265.00 Q182.53,253.78 161.79,252.59" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 715ms ease forwards"/>
+      <path d="M161.79,252.59 Q154.25,233.24 138.18,220.09" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 727ms ease forwards"/>
+      <path d="M138.18,220.09 Q143.45,200.00 138.18,179.91" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 739ms ease forwards"/>
+      <path d="M138.18,179.91 Q154.25,166.76 161.79,147.41" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 751ms ease forwards"/>
+      <path d="M161.79,147.41 Q182.53,146.22 200.00,135.00" stroke="rgba(226,54,54,0.25)" stroke-width="0.28" fill="none" stroke-dasharray="42.2" stroke-dashoffset="42.2" style="animation:wd .18s 763ms ease forwards"/>
+      <path d="M200.00,98.00 Q227.42,115.60 259.95,117.48" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 690ms ease forwards"/>
+      <path d="M259.95,117.48 Q271.79,147.84 297.01,168.48" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 702ms ease forwards"/>
+      <path d="M297.01,168.48 Q288.74,200.00 297.01,231.52" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 714ms ease forwards"/>
+      <path d="M297.01,231.52 Q271.79,252.16 259.95,282.52" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 726ms ease forwards"/>
+      <path d="M259.95,282.52 Q227.42,284.40 200.00,302.00" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 738ms ease forwards"/>
+      <path d="M200.00,302.00 Q172.58,284.40 140.05,282.52" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 750ms ease forwards"/>
+      <path d="M140.05,282.52 Q128.21,252.16 102.99,231.52" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 762ms ease forwards"/>
+      <path d="M102.99,231.52 Q111.26,200.00 102.99,168.48" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 774ms ease forwards"/>
+      <path d="M102.99,168.48 Q128.21,147.84 140.05,117.48" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 786ms ease forwards"/>
+      <path d="M140.05,117.48 Q172.58,115.60 200.00,98.00" stroke="rgba(226,54,54,0.22)" stroke-width="0.28" fill="none" stroke-dasharray="66.2" stroke-dashoffset="66.2" style="animation:wd .18s 798ms ease forwards"/>
+      <path d="M200.00,57.00 Q238.44,81.68 284.05,84.31" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 725ms ease forwards"/>
+      <path d="M284.05,84.31 Q300.65,126.87 336.00,155.81" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 737ms ease forwards"/>
+      <path d="M336.00,155.81 Q324.41,200.00 336.00,244.19" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 749ms ease forwards"/>
+      <path d="M336.00,244.19 Q300.65,273.13 284.05,315.69" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 761ms ease forwards"/>
+      <path d="M284.05,315.69 Q238.44,318.32 200.00,343.00" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 773ms ease forwards"/>
+      <path d="M200.00,343.00 Q161.56,318.32 115.95,315.69" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 785ms ease forwards"/>
+      <path d="M115.95,315.69 Q99.35,273.13 64.00,244.19" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 797ms ease forwards"/>
+      <path d="M64.00,244.19 Q75.59,200.00 64.00,155.81" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 809ms ease forwards"/>
+      <path d="M64.00,155.81 Q99.35,126.87 115.95,84.31" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 821ms ease forwards"/>
+      <path d="M115.95,84.31 Q161.56,81.68 200.00,57.00" stroke="rgba(226,54,54,0.19)" stroke-width="0.28" fill="none" stroke-dasharray="92.8" stroke-dashoffset="92.8" style="animation:wd .18s 833ms ease forwards"/>
+      <path d="M200.00,15.00 Q249.74,46.93 308.74,50.33" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 760ms ease forwards"/>
+      <path d="M308.74,50.33 Q330.21,105.40 375.95,142.83" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 772ms ease forwards"/>
+      <path d="M375.95,142.83 Q360.95,200.00 375.95,257.17" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 784ms ease forwards"/>
+      <path d="M375.95,257.17 Q330.21,294.60 308.74,349.67" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 796ms ease forwards"/>
+      <path d="M308.74,349.67 Q249.74,353.07 200.00,385.00" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 808ms ease forwards"/>
+      <path d="M200.00,385.00 Q150.26,353.07 91.26,349.67" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 820ms ease forwards"/>
+      <path d="M91.26,349.67 Q69.79,294.60 24.05,257.17" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 832ms ease forwards"/>
+      <path d="M24.05,257.17 Q39.05,200.00 24.05,142.83" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 844ms ease forwards"/>
+      <path d="M24.05,142.83 Q69.79,105.40 91.26,50.33" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 856ms ease forwards"/>
+      <path d="M91.26,50.33 Q150.26,46.93 200.00,15.00" stroke="rgba(226,54,54,0.16)" stroke-width="0.28" fill="none" stroke-dasharray="120.1" stroke-dashoffset="120.1" style="animation:wd .18s 868ms ease forwards"/>
+      <path d="M200.00,-28.00 Q261.30,11.35 334.02,15.54" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 795ms ease forwards"/>
+      <path d="M334.02,15.54 Q360.48,83.41 416.84,129.54" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 807ms ease forwards"/>
+      <path d="M416.84,129.54 Q398.36,200.00 416.84,270.46" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 819ms ease forwards"/>
+      <path d="M416.84,270.46 Q360.48,316.59 334.02,384.46" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 831ms ease forwards"/>
+      <path d="M334.02,384.46 Q261.30,388.65 200.00,428.00" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 843ms ease forwards"/>
+      <path d="M200.00,428.00 Q138.70,388.65 65.98,384.46" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 855ms ease forwards"/>
+      <path d="M65.98,384.46 Q39.52,316.59 -16.84,270.46" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 867ms ease forwards"/>
+      <path d="M-16.84,270.46 Q1.64,200.00 -16.84,129.54" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 879ms ease forwards"/>
+      <path d="M-16.84,129.54 Q39.52,83.41 65.98,15.54" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 891ms ease forwards"/>
+      <path d="M65.98,15.54 Q138.70,11.35 200.00,-28.00" stroke="rgba(226,54,54,0.13)" stroke-width="0.28" fill="none" stroke-dasharray="148.0" stroke-dashoffset="148.0" style="animation:wd .18s 903ms ease forwards"/>
+      <circle cx="200" cy="200" r="4" fill="#e23636" style="animation:dotP .65s .9s ease-in-out infinite"/>
+    </svg>
+
+    <!-- Comic elements — pop into existence (comicPop), staggered burst -->
+    <div class="pk" style="top:9%;right:8%;font-size:clamp(54px,8.5vw,88px);color:#e23636;--r:-9deg;--d:.2s;text-shadow:3px 0 #00eeff,-3px 0 #ff00aa">THWIP!</div>
+    <div class="pk" style="top:7%;left:6%;font-size:clamp(38px,5.5vw,58px);color:#e2e2e2;--r:13deg;--d:.25s">POW!</div>
+    <div class="pk" style="top:42%;left:4%;font-size:clamp(26px,3.5vw,40px);color:#e23636;--r:-7deg;--d:.41s">SNAP!</div>
+    <div class="pk" style="bottom:21%;right:7%;font-size:clamp(30px,4vw,46px);color:#e2e2e2;--r:10deg;--d:.34s">CRACK!</div>
+    <div class="pk" style="bottom:20%;left:5%;font-size:clamp(22px,3vw,36px);color:#e23636;--r:16deg;--d:.55s">THWAK!</div>
+    <div class="pk" style="top:22%;right:6%;font-size:clamp(9px,1vw,12px);font-family:monospace;font-weight:400;letter-spacing:.2em;color:rgba(226,226,226,.4);--r:-2deg;--d:.62s">YOUR NEIGHBORHOOD ENGINEER</div>
+    <div class="pk" style="bottom:12%;right:8%;font-size:clamp(8px,.9vw,11px);font-family:monospace;font-weight:400;letter-spacing:.22em;color:rgba(226,54,54,.45);--r:1deg;--d:.74s">/// WEB_FULLY_DEPLOYED ///</div>
+    <div class="pk" style="top:60%;right:5%;font-size:clamp(18px,2.5vw,32px);color:#e2e2e2;--r:-14deg;--d:.46s">WHAM!</div>
+  </div>
 
   <!-- CUSTOM CURSOR -->
   <div id="cursor-dot"></div>
@@ -578,83 +722,67 @@ and visuals that actually leave a mark.
      </div>
   </section>
 
-  <!-- SECTION 5: STUDIO / GALLERY (Title section isolated to scroll away naturally) -->
+  <!-- SECTION 5: STUDIO / GALLERY (Wrapped in massive z-20 blocker to crush GSAP gap) -->
   <div class="w-full relative z-20 bg-[#000] -mt-[2px] pt-[2px]">
-      <section class="engineering-gallery w-full px-4 md:px-12 pt-[10vh] pb-[10vh] relative z-10 max-w-screen-2xl mx-auto">
+      <section class="engineering-gallery w-full px-4 md:px-12 pt-[10vh] pb-[40vh] relative z-10 max-w-screen-2xl mx-auto">
         <div class="flex flex-col items-start gap-4 z-10 lg:pr-12 mb-8">
            <span class="font-mono-custom text-[#e23636] text-sm md:text-base uppercase tracking-widest block mb-2">/ ORIGINS</span>
            <h2 class="gsap-title text-4xl md:text-6xl lg:text-[5vw] font-bold uppercase tracking-tighter text-[#e2e2e2] leading-[0.9]">ENGINEERING<br/>DIGITAL EXPERIENCES.</h2>
         </div>
+
+        <div class="relative w-full mt-[15vh] mb-[15vh] min-h-[100vh] max-w-7xl mx-auto" id="engineering-matrix">
+            
+            <!-- Dynamic SVG Web Canvas (Overlay) -->
+            <svg id="spider-web-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none"></svg>
+            
+            <!-- Clean 2x2 Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 md:gap-x-32 gap-y-32 md:gap-y-[15vh] w-full relative z-10 items-center px-4 md:px-8">
+               
+               <!-- Row 1 -->
+               <!-- Item 1: Left (Goes Down) -->
+               <div class="spider-node w-[75%] lg:w-[65%] relative mr-auto" data-speed="1.2">
+                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/giocoGianni.mp4" class="gallery-media" autoplay loop muted playsinline></video>
+               </div>
+               <!-- Item 2: Right (Goes Up) -->
+               <div class="spider-node w-[75%] lg:w-[65%] relative ml-auto" data-speed="-1.2">
+                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/toucch1.mp4" class="gallery-media" autoplay loop muted playsinline></video>
+               </div>
+
+               <!-- Row 2 -->
+               <!-- Item 3: Left (Goes Down) -->
+               <div class="spider-node w-[75%] lg:w-[65%] relative mr-auto" data-speed="1.2">
+                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch2.mp4" class="gallery-media" autoplay loop muted playsinline></video>
+               </div>
+               <!-- Item 4: Right (Goes Up) -->
+               <div class="spider-node w-[75%] lg:w-[65%] relative ml-auto" data-speed="-1.2">
+                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch3.mp4" class="gallery-media" autoplay loop muted playsinline></video>
+               </div>
+
+               <!-- Row 3 -->
+               <!-- Item 5: Left (Goes Down) -->
+               <div class="spider-node w-[75%] lg:w-[65%] relative mr-auto" data-speed="1.2">
+                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch4.mp4" class="gallery-media" autoplay loop muted playsinline></video>
+               </div>
+               <!-- Item 6: Right (Goes Up) -->
+               <div class="spider-node w-[75%] lg:w-[65%] relative ml-auto" data-speed="-1.2">
+                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touchClip.mp4" class="gallery-media" autoplay loop muted playsinline></video>
+               </div>
+
+               <!-- Row 4 -->
+               <!-- Item 7: Left (Goes Down) -->
+               <div class="spider-node w-[75%] lg:w-[65%] relative mr-auto" data-speed="1.2">
+                  <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/girassoliClip.mp4" class="gallery-media" autoplay loop muted playsinline></video>
+               </div>
+               <!-- Item 8: Right (Goes Up) -->
+               <div class="spider-node w-[75%] lg:w-[65%] relative ml-auto" data-speed="-1.2">
+                  <img src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/giocoGianni2.jpeg" class="gallery-media" alt="Project"/>
+               </div>
+            </div>
+        </div>
       </section>
-  </div>
-
-  <!-- SECTION 5.5: VERTICAL NEURAL VAULT (Organic / Web-Connected) -->
-  <section class="neural-vault-container relative w-full flex flex-col items-center bg-[#000] z-20 pt-[10vh] pb-[20vh]">
-      
-      <!-- User's Custom Spider-Sense Vector Definition (Reused via <use>) -->
-      <svg style="display:none;">
-        <symbol id="spider-sense-path" viewBox="0 0 111 79">
-            <path d="M6.98705 28.204L0.487045 0.203979L10.987 23.704L36.987 18.204L44.487 46.204L71.487 39.704L81.487 67.204L105.487 63.204L109.987 78.204L102.487 66.204L75.487 73.204L66.987 46.704L39.487 52.204L31.987 24.704L6.98705 28.204Z" />
-        </symbol>
-      </svg>
-
-      <div class="neural-track flex flex-col w-full px-4 md:px-12 relative z-10 bg-transparent">
-         <!-- Dynamic SVG Web Canvas moved INSIDE track for perfect coordinate parity -->
-         <svg id="spider-web-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none" preserveAspectRatio="none"></svg>
-         
-         <!-- NODE 01 (TL) -->
-         <div class="spider-node aspect-[16/10]">
-            <div class="ditko-aura aura-tl"><img src="./assets/sp-sense-3.svg" alt="Spider-Sense"></div>
-            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/giocoGianni.mp4" class="gallery-media object-cover w-full h-full border border-white/10" autoplay loop muted playsinline></video>
-         </div>
-
-         <!-- NODE 02 (TR) -->
-         <div class="spider-node aspect-[16/10]">
-            <div class="ditko-aura aura-tr"><img src="./assets/sp-sense-3.svg" alt="Spider-Sense"></div>
-            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/toucch1.mp4" class="gallery-media object-cover w-full h-full border border-white/10" autoplay loop muted playsinline></video>
-         </div>
-
-         <!-- NODE 03 (BL) -->
-         <div class="spider-node aspect-[16/10]">
-            <div class="ditko-aura aura-bl"><img src="./assets/sp-sense-3.svg" alt="Spider-Sense"></div>
-            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch2.mp4" class="gallery-media object-cover w-full h-full border border-white/10" autoplay loop muted playsinline></video>
-         </div>
-
-         <!-- NODE 04 (BR) -->
-         <div class="spider-node aspect-[16/10]">
-            <div class="ditko-aura aura-br"><img src="./assets/sp-sense-3.svg" alt="Spider-Sense"></div>
-            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch3.mp4" class="gallery-media object-cover w-full h-full border border-white/10" autoplay loop muted playsinline></video>
-         </div>
-
-         <!-- NODE 05 (TL) -->
-         <div class="spider-node aspect-[16/10]">
-            <div class="ditko-aura aura-tl"><img src="./assets/sp-sense-3.svg" alt="Spider-Sense"></div>
-            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touch4.mp4" class="gallery-media object-cover w-full h-full border border-white/10" autoplay loop muted playsinline></video>
-         </div>
-
-         <!-- NODE 06 (TR) -->
-         <div class="spider-node aspect-[16/10]">
-            <div class="ditko-aura aura-tr"><img src="./assets/sp-sense-3.svg" alt="Spider-Sense"></div>
-            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/touchClip.mp4" class="gallery-media object-cover w-full h-full border border-white/10" autoplay loop muted playsinline></video>
-         </div>
-
-         <!-- NODE 07 (BL) -->
-         <div class="spider-node aspect-[16/10]">
-            <div class="ditko-aura aura-bl"><img src="./assets/sp-sense-3.svg" alt="Spider-Sense"></div>
-            <video src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/girassoliClip.mp4" class="gallery-media object-cover w-full h-full border border-white/10" autoplay loop muted playsinline></video>
-         </div>
-
-         <!-- NODE 08 (BR) -->
-         <div class="spider-node aspect-[16/10]">
-            <div class="ditko-aura aura-br"><img src="./assets/sp-sense-3.svg" alt="Spider-Sense"></div>
-            <img src="./assets/sezione_ENGINEERINGDIGITALEXPERIENCES/giocoGianni2.jpeg" class="gallery-media object-cover w-full h-full border border-white/10" alt="Project"/>
-         </div>
-
-      </div>
-  </section>
 
   <!-- SECTION 6: ARCHIVE -->
-  <section class="w-full mb-[35vh] relative z-30 bg-[#000] pt-[10vh]">
+  <section class="w-full mb-[35vh] relative z-10">
      <div class="px-4 md:px-12 max-w-screen-2xl mx-auto mb-[10vh]">
         <span class="font-mono-custom text-[#e23636] text-sm md:text-base uppercase tracking-widest block mb-4">/ REPOSITORY</span>
         <h2 class="gsap-title text-4xl md:text-6xl lg:text-[5vw] font-bold uppercase tracking-tighter text-[#e2e2e2] leading-[0.9]">ARCHIVE_LOG</h2>
@@ -924,9 +1052,9 @@ and visuals that actually leave a mark.
 
   <!-- FOOTER WRAPPER: RED BACKGROUND -->
   <div class="w-full bg-[#e23636] py-8 px-4 md:px-12">
-     <footer class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 py-6 px-4 md:px-10 bg-[#000] z-10 relative font-mono-custom text-[10px] text-white/70 rounded-[20px] md:rounded-[30px] text-center md:text-left">
-       <span data-scramble="SYSTEM_STATUS: NOMINAL // © 2026 spidey.p // NEIGHBORHOOD_ENGINEER">SYSTEM_STATUS: NOMINAL // © 2026 spidey.p // NEIGHBORHOOD_ENGINEER</span>
-       <div class="flex flex-wrap justify-center gap-4 md:gap-8 uppercase tracking-widest font-bold">
+     <footer class="max-w-[1400px] mx-auto flex justify-between items-center py-6 px-10 bg-[#000] z-10 relative font-mono-custom text-[10px] text-white/70 rounded-[20px] md:rounded-[30px]">
+       <span data-scramble="SYSTEM_STATUS: NOMINAL // © 2024 NEIGHBORHOOD_ENGINEER">SYSTEM_STATUS: NOMINAL // © 2024 NEIGHBORHOOD_ENGINEER</span>
+       <div class="flex gap-8 uppercase tracking-widest font-bold">
           <a href="https://www.linkedin.com/in/francesco-lillo-a106bb352" target="_blank" class="link-underline">LINKEDIN</a>
           <a href="https://github.com/flillo6" target="_blank" class="link-underline">GITHUB</a>
           <a href="https://www.instagram.com/fraanzesco?igsh=cmluN29ybmM0Mmtp&utm_source=qr" target="_blank" class="link-underline">INSTAGRAM</a>
@@ -946,6 +1074,23 @@ and visuals that actually leave a mark.
         // Register ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
 
+        // ============================================================
+        // PRELOADER — dismiss after 2s or when page is ready
+        // ============================================================
+        const preloader = document.getElementById('preloader');
+        
+                                function dismissPreloader() {
+          // Web has been expanding since 0ms via CSS.
+          // At ~1500ms it covers the viewport completely.
+          // Fade out the preloader cleanly.
+          preloader.style.transition = 'opacity 0.15s ease';
+          preloader.style.opacity = '0';
+          setTimeout(() => {
+            preloader.classList.add('hidden');
+            document.body.style.overflow = '';
+          }, 160);
+        }
+        setTimeout(dismissPreloader, 1520);
 
         // ============================================================
         // CUSTOM CURSOR — mix-blend-mode:difference lens on specific targets
@@ -1041,7 +1186,7 @@ and visuals that actually leave a mark.
         const videoObserver = new IntersectionObserver((entries) => {
            entries.forEach(entry => {
               if (entry.isIntersecting) {
-                 entry.target.play().catch(() => {});
+                 entry.target.play().catch(e => console.log('Auto-play caught', e));
               } else {
                  entry.target.pause();
               }
@@ -1088,7 +1233,7 @@ and visuals that actually leave a mark.
         // Disabled on mobile for performance
         // ==========================================
         const gallerySection = document.querySelector('.engineering-gallery');
-        const parallaxNodes = document.querySelectorAll('[data-speed]:not(.spider-node)');
+        const parallaxNodes = document.querySelectorAll('[data-speed]');
         const isMobile = window.innerWidth < 768;
 
         if (!isMobile) {
@@ -1107,7 +1252,87 @@ and visuals that actually leave a mark.
         }
 
 
+        // ==========================================
+        // DYNAMIC SPIDER WEB GENERATOR (GSAP TICKER)
+        // Disabled on mobile
+        // ==========================================
+        const spiderWebCanvas = document.getElementById('spider-web-canvas');
+        const spiderNodes = document.querySelectorAll('.spider-node');
+        const engineeringMatrix = document.getElementById('engineering-matrix');
 
+        if (isMobile && spiderWebCanvas) { spiderWebCanvas.style.display = 'none'; }
+
+        function drawSpiderWeb() {
+            if (isMobile || !spiderWebCanvas || spiderNodes.length === 0) return;
+            
+            // Clear previous lines
+            spiderWebCanvas.innerHTML = '';
+            
+            // Get boundaries and node centers
+            const containerRect = engineeringMatrix.getBoundingClientRect();
+            const points = [];
+            
+            spiderNodes.forEach(node => {
+                const rect = node.getBoundingClientRect();
+                const centerX = (rect.left + rect.width / 2) - containerRect.left;
+                const centerY = (rect.top + rect.height / 2) - containerRect.top;
+                points.push({ x: centerX, y: centerY });
+            });
+
+            // Iterate and draw lines
+            for (let i = 0; i < points.length; i++) {
+                // Connect to next node (Linear chain)
+                if (i < points.length - 1) {
+                    createWebLine(points[i].x, points[i].y, points[i+1].x, points[i+1].y, 0.5);
+                }
+                // Connect to node + 3 (Web criss-cross patterns)
+                if (i + 3 < points.length) {
+                    createWebLine(points[i].x, points[i].y, points[i+3].x, points[i+3].y, 0.3);
+                }
+                // Connect to central node 5 acting as a Hub
+                if (i !== 4) {
+                    createWebLine(points[i].x, points[i].y, points[4].x, points[4].y, 0.15);
+                }
+            }
+        }
+
+        function createWebLine(x1, y1, x2, y2, customAlpha) {
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            
+            // Calculate distance between elements to simulate tension
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            
+            // Compute middle point
+            const midX = (x1 + x2) / 2;
+            
+            // Sag physics: the closer they are, the more the thread sags downwards (gravity).
+            // When pulled apart by the intense parallax, it tightens (sag -> 0).
+            let sagAmount = 180 - (dist * 0.15);
+            if(sagAmount < 0) sagAmount = 0; // Taut thread! no sag.
+            
+            const midY = ((y1 + y2) / 2) + sagAmount; // Gravity pulls Y downwards (positive)
+            
+            // Draw a Quadratic Bezier curve
+            const dStr = `M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`;
+            
+            path.setAttribute('d', dStr);
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', '#e23636'); // Red Spidey threads
+            path.setAttribute('stroke-width', '1.5');
+            path.setAttribute('opacity', customAlpha.toString());
+            path.setAttribute('stroke-dasharray', '6 4'); // Technical dashes
+            
+            // Glow effect for web realism
+            path.style.filter = "drop-shadow(0px 4px 6px rgba(226, 54, 54, 0.3))";
+            
+            spiderWebCanvas.appendChild(path);
+        }
+
+        // Add to ticker so it redraws 60fps while GSAP moves the elements
+        gsap.ticker.add(drawSpiderWeb);
+        window.addEventListener('resize', drawSpiderWeb);
 
         // 1.5. Infinite Cinematic Ticker (Independent from scroll)
         gsap.to('.marquee-content', {
@@ -1163,6 +1388,7 @@ and visuals that actually leave a mark.
            scale: 1.05,
            ease: "power1.inOut"
         }, 0);
+
         // 1. Hero Wipe Text Animation (Custom BR-safe Splitizer)
         const descText = document.querySelector('.hero-desc-text');
         if (descText) {
@@ -1198,7 +1424,6 @@ and visuals that actually leave a mark.
         // 2. Multiverse Horizontal GSAP (Enhanced Flow)
         let track = document.querySelector('.multiverse-track');
         // Calculate the translation distance
-        if (!track) return;
         let trackWidth = track.scrollWidth - window.innerWidth; 
         
         // Let's make the text ENTER the screen from the right
@@ -1240,8 +1465,6 @@ and visuals that actually leave a mark.
            }
         });
     }); // END DOMContentLoaded
-
-    // Neural Vault Aura cleaned up (repositioned logic inside DOMContentLoaded or CSS)
 
     // =============================================
     // IDEA B: WEB SWING THREAD — Enhanced
@@ -1499,7 +1722,8 @@ and visuals that actually leave a mark.
   // ============================================================
   window.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.skill-shard');
-    if (!cards.length) return;
+    if (!cards.length) { console.warn('[Shatter] No .skill-shard cards found'); return; }
+    console.log('[Shatter] Found', cards.length, 'cards');
 
     cards.forEach(card => {
       const canvas = document.createElement('canvas');
@@ -1617,116 +1841,6 @@ and visuals that actually leave a mark.
       });
     });
   });
-
-  // ============================================================
-  // 🕸️ NEURAL ELASTICITY ENGINE (V5.8.0)
-  // Dynamic Web + Card Physics responding to Scroll Velocity
-  // ============================================================
-  (function initNeuralElasticity() {
-    const canvas = document.getElementById('spider-web-canvas');
-    const container = document.querySelector('.neural-track');
-    const nodes = document.querySelectorAll('.spider-node');
-    if (!canvas || !nodes.length) return;
-
-    let points = [];
-    let lines = [];
-    let scrollVelocity = 0;
-    let lastScrollY = window.scrollY;
-
-    // Node Physics State (V5.12.0 - Eternal Suspensions)
-    const nodePhysics = Array.from(nodes).map((_, i) => ({
-      y: 0,
-      vel: 0,
-      phaseOffset: i * 0.8 // Unique rhythm for each card
-    }));
-
-    // Sincronizzazione Hero Spiderman (V5.13.0)
-    const FRICTION = 0.82;
-    const LERP     = 0.11;
-    const STRETCH  = 0.35;
-    const CLAMP    = 60; 
-    const IDLE_AMP = 12; // Reduced for subtle, hypnotic bobbing
-
-    function updatePoints() {
-      const containerRect = container.getBoundingClientRect();
-      canvas.style.height = container.scrollHeight + 'px';
-      
-      points = Array.from(nodes).map((node, i) => {
-        const r = node.getBoundingClientRect();
-        return {
-          x: r.left - containerRect.left + r.width / 2,
-          y: r.top - containerRect.top + r.height / 2 - nodePhysics[i].y
-        };
-      });
-    }
-
-    function createWeb() {
-      canvas.innerHTML = '';
-      lines = [];
-      const linkMap = [];
-      for (let i = 0; i < points.length; i++) {
-        if (i < points.length - 1) linkMap.push([i, i + 1]);
-        if (i < points.length - 2) linkMap.push([i, i + 2]);
-      }
-      linkMap.forEach(([i, j]) => {
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('class', 'web-line');
-        canvas.appendChild(path);
-        lines.push({ path, start: i, end: j, jitter: Math.random() * 100, sagVel: 0, currentSag: 0 });
-      });
-    }
-
-    function animateWeb() {
-      const time = Date.now() * 0.005;
-      const currentScrollY = window.scrollY;
-      scrollVelocity = (currentScrollY - lastScrollY);
-      lastScrollY = currentScrollY;
-
-      nodes.forEach((node, i) => {
-        const ph = nodePhysics[i];
-        const idleTargetY = Math.sin(time + ph.phaseOffset) * IDLE_AMP;
-        ph.vel = (ph.vel * FRICTION) + (idleTargetY - ph.y) * LERP;
-        ph.vel -= scrollVelocity * 0.45;
-        ph.y += ph.vel;
-        if (Math.abs(ph.y) > CLAMP) ph.y = Math.sign(ph.y) * CLAMP;
-        node.style.transform = `rotate(${(i % 2 === 0) ? -1 : 1.5}deg) translateY(${ph.y}px)`;
-      });
-
-      updatePoints();
-
-      lines.forEach(line => {
-        const p1 = points[line.start];
-        const p2 = points[line.end];
-        if (!p1 || !p2) return;
-
-        const midX = (p1.x + p2.x) / 2;
-        const midY = (p1.y + p2.y) / 2;
-        const dist = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-        const baseSag = dist * 0.12; 
-        const targetSag = baseSag + (scrollVelocity * STRETCH);
-        line.sagVel = (line.sagVel * FRICTION) + (targetSag - line.currentSag) * LERP;
-        line.currentSag += line.sagVel;
-        const clampedSag = Math.min(Math.max(line.currentSag, baseSag * 0.3), baseSag * 2.8);
-        const jX = Math.sin(time + line.jitter) * 1.5;
-        const jY = Math.cos(time + line.jitter) * 1.5;
-        const cpX = (midX + jX).toFixed(1);
-        const cpY = (midY + clampedSag + jY).toFixed(1);
-
-        // Force integer/fixed coordinates for faster & more reliable mobile rendering
-        line.path.setAttribute('d', `M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} Q ${cpX} ${cpY} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`);
-      });
-
-      requestAnimationFrame(animateWeb);
-    }
-
-    updatePoints();
-    createWeb();
-    animateWeb();
-    window.addEventListener('resize', () => { 
-      updatePoints(); 
-      createWeb(); 
-    });
-  })();
 
   </script>
 </body>
