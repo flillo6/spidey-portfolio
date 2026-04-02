@@ -153,14 +153,62 @@
     .link-underline-light:hover { color: #fff !important; }
 
     /* ================================
-       ARCHIVE HOVER — Consistent Color
+       ARCHIVE — Reference Layout
     ================================ */
-    .archive-bg-overlay {
-      background: rgba(15, 5, 5, 0.88);
+    .archive-item {
+      padding: 2rem 3rem;
+      display: grid;
+      grid-template-columns: 3.5rem 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid #1e0e0e;
+      transition: background 0.4s ease, padding 0.35s ease;
     }
-    .archive-item:hover .archive-bg-overlay {
-      background: rgba(140, 20, 20, 0.82);
+    @media (max-width: 768px) {
+      .archive-item { grid-template-columns: 2.5rem 1fr; gap: 1rem; padding: 1.5rem; }
     }
+    .archive-item:hover { background: rgba(20,5,5,0.6); padding-top: 2.8rem; padding-bottom: 2.8rem; }
+    .archive-num {
+      font-family: 'Liberation Mono', monospace;
+      font-size: 0.72rem; color: #3a2020;
+      letter-spacing: 0.05em; align-self: flex-start; padding-top: 0.7em;
+    }
+    .archive-title {
+      font-size: clamp(2.2rem, 4.5vw, 5.5rem);
+      font-weight: 700; text-transform: uppercase;
+      letter-spacing: -0.03em; line-height: 0.88;
+      color: #c0c0c0; transition: color 0.3s ease;
+    }
+    .archive-item:hover .archive-title { color: #ffffff; }
+    .archive-meta {
+      text-align: right; display: flex;
+      flex-direction: column; align-items: flex-end; gap: 0.5rem;
+    }
+    @media (max-width: 768px) { .archive-meta { display: none; } }
+    .archive-tags {
+      font-family: 'Liberation Mono', monospace;
+      font-size: 0.62rem; text-transform: uppercase;
+      letter-spacing: 0.14em; color: #3a2020;
+      transition: color 0.4s ease; cursor: default;
+    }
+    .archive-item:hover .archive-tags { color: #e23636; }
+    .archive-year {
+      font-family: 'Liberation Mono', monospace;
+      font-size: 0.62rem; color: #2a1515;
+      letter-spacing: 0.1em; transition: color 0.4s ease;
+    }
+    .archive-item:hover .archive-year { color: #6b4040; }
+    .archive-bg-container {
+      clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+      transition: clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .archive-item:hover .archive-bg-container {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .archive-bg-overlay { background: rgba(5, 1, 1, 0.85); }
+    .archive-item:hover .archive-bg-overlay { background: rgba(10, 2, 2, 0.78); }
 
     /* ================================
        GALLERY MEDIA - Professional
@@ -219,36 +267,30 @@
     @keyframes fadeIn { to { opacity: 1; } }
 
     /* ================================
-       CUSTOM CURSOR (desktop only)
+       CUSTOM CURSOR — Solo dot rosso
     ================================ */
     @media (pointer: fine) {
       * { cursor: none !important; }
     }
     #cursor-dot {
       position: fixed; z-index: 9998; pointer-events: none;
-      width: 8px; height: 8px; border-radius: 50%;
+      width: 10px; height: 10px; border-radius: 50%;
       background: #e23636;
       transform: translate(-50%, -50%);
-      transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
-      mix-blend-mode: normal;
+      transition: width 0.18s ease, height 0.18s ease,
+                  background 0.18s ease, border 0.18s ease;
     }
-    #cursor-ring {
-      position: fixed; z-index: 9997; pointer-events: none;
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 1px solid rgba(226,54,54,0.5);
-      transform: translate(-50%, -50%);
-      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
-      /* Ring lags behind dot — set via JS */
+    #cursor-dot.is-hovering {
+      width: 32px; height: 32px;
+      background: transparent;
+      border: 1.5px solid #e23636;
     }
-    body:has(a:hover) #cursor-dot,
-    body:has(button:hover) #cursor-dot { transform: translate(-50%,-50%) scale(2.5); background: #fff; }
-    body:has(a:hover) #cursor-ring,
-    body:has(button:hover) #cursor-ring { width: 56px; height: 56px; border-color: rgba(255,255,255,0.3); }
 
     /* ================================
-       SCROLL PROGRESS BAR (top)
+       SCRAMBLE TEXT
     ================================ */
-    /* REMOVED */
+    [data-scramble] { display: inline-block; }
+
 
     /* ================================
        MOBILE OPTIMIZATIONS
@@ -332,8 +374,8 @@
 
            <!-- Stacked Info Right (Reference Style) -->
            <div class="flex flex-col items-end gap-1 text-[10px] md:text-xs lg:text-sm font-mono-custom tracking-widest uppercase text-[#e2e2e2] pointer-events-auto">
-              <span class="hover:text-[#ab8885] transition-colors cursor-default">BARI, ITALY / REMOTE</span>
-              <span class="hover:text-[#ab8885] transition-colors cursor-default">MISSION STATUS: FULLY OPERATIONAL</span>
+              <span data-scramble="BARI, ITALY / REMOTE" data-scramble="BARI, ITALY / REMOTE" class="hover:text-[#ab8885] transition-colors cursor-default">BARI, ITALY / REMOTE</span>
+              <span data-scramble="MISSION STATUS: FULLY OPERATIONAL" data-scramble="MISSION STATUS: FULLY OPERATIONAL" class="hover:text-[#ab8885] transition-colors cursor-default">MISSION STATUS: FULLY OPERATIONAL</span>
            </div>
         </div>
 
@@ -766,21 +808,30 @@ and visuals that actually leave a mark.
           <!-- Column 1 -->
           <div class="flex flex-col">
               <div class="font-bold text-lg md:text-xl uppercase tracking-tighter border-b border-[#080808] pb-2">
-                  / DIGITAL
+                  <span data-scramble="/ DIGITAL">/ DIGITAL</span>
               </div>
           </div>
 
           <!-- Column 2 -->
           <div class="flex flex-col">
               <div class="font-bold text-lg md:text-xl uppercase tracking-tighter border-b border-[#080808] pb-2">
-                  / SOCIAL
+                  <span data-scramble="/ SOCIAL">/ SOCIAL</span>
               </div>
           </div>
 
           <!-- Column 3 -->
           <div class="flex flex-col">
               <div class="font-bold text-lg md:text-xl uppercase tracking-tighter border-b border-[#080808] pb-2">
-                  / EXPERIENCE
+                  <span data-scramble="/ EXPERIENCE">/ EXPERIENCE</span>
+              </div>
+          </div>
+
+          <!-- Column 4 -->
+          <div class="flex flex-col">
+              <div class="font-bold text-lg md:text-xl uppercase tracking-tighter border-b border-[#080808] pb-2">
+                  <span data-scramble="/ PRODUCTION">/ PRODUCTION</span>
+              </div>
+          </div>
               </div>
           </div>
 
