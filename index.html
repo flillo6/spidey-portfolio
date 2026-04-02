@@ -477,7 +477,7 @@ and visuals that actually leave a mark.
          <h2 class="gsap-title text-3xl md:text-5xl lg:text-[4vw] font-bold uppercase tracking-tighter text-[#e2e2e2] leading-[0.9] max-w-3xl">
             ...COMES GREAT RESPONSIBILITY.
          </h2>
-         <p class="font-mono-custom text-xs lg:text-sm text-[#ab8885] tracking-widest leading-loose mt-4 max-w-xl">
+         <p data-scramble="/// (especially in ensuring clean, optimized code and a flawless user experience) ///" class="font-mono-custom text-xs lg:text-sm text-[#ab8885] tracking-widest leading-loose mt-4 max-w-xl cursor-default">
             /// (especially in ensuring clean,<br/>
             optimized code and a flawless user<br/>
             experience) ///
@@ -725,48 +725,48 @@ and visuals that actually leave a mark.
             <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-size: 40px 40px; background-image: linear-gradient(to right, #e23636 1px, transparent 1px), linear-gradient(to bottom, #e23636 1px, transparent 1px);"></div>
  
             <div class="flex flex-col md:flex-row justify-between border-b border-[#5b403d] pb-6 mb-12 w-full relative z-10 font-mono-custom text-xs uppercase tracking-widest">
-               <span class="hacker-line text-[#e23636] inline-block">ADMIN_ACCESS</span>
-               <span class="hacker-line text-[#ab8885] inline-block">IP: 127.0.0.1</span>
+               <span data-scramble="ADMIN_ACCESS" class="hacker-line text-[#e23636] inline-block cursor-default">ADMIN_ACCESS</span>
+               <span data-scramble="IP: 127.0.0.1" class="hacker-line text-[#ab8885] inline-block cursor-default">IP: 127.0.0.1</span>
             </div>
  
             <div class="flex flex-col gap-6 text-[#e2e2e2] font-mono-custom tracking-wider w-full mb-12 relative z-10" id="terminal-log">
                <div class="flex items-start gap-4">
                   <span class="text-[#e23636]">></span>
-                  <p class="terminal-line" data-text="INITIATING NEURAL LINK..."></p>
+                  <p class="terminal-line" data-scramble="INITIATING NEURAL LINK..." data-text="INITIATING NEURAL LINK..."></p>
                </div>
                <div class="flex items-start gap-4">
                   <span class="text-[#e23636]">></span>
-                  <p class="terminal-line" data-text="LOADING CORE PROTOCOLS..."></p>
+                  <p class="terminal-line" data-scramble="LOADING CORE PROTOCOLS..." data-text="LOADING CORE PROTOCOLS..."></p>
                </div>
                <div class="flex items-start gap-4">
                   <span class="text-[#e23636]">></span>
-                  <p class="terminal-line" data-text="sys.log: 4 Years Active Development"></p>
+                  <p class="terminal-line" data-scramble="sys.log: 4 Years Active Development" data-text="sys.log: 4 Years Active Development"></p>
                </div>
                <div class="flex items-start gap-4">
                   <span class="text-[#e23636]">></span>
-                  <p class="terminal-line" data-text="sys.log: 7+ Shipped Projects"></p>
+                  <p class="terminal-line" data-scramble="sys.log: 7+ Shipped Projects" data-text="sys.log: 7+ Shipped Projects"></p>
                </div>
                <div class="flex items-start gap-4">
                   <span class="text-[#e23636]">></span>
-                  <p class="terminal-line" data-text="sys.log: 60 FPS Constant Target"></p>
+                  <p class="terminal-line" data-scramble="sys.log: 60 FPS Constant Target" data-text="sys.log: 60 FPS Constant Target"></p>
                </div>
                <div class="flex items-start gap-4">
                   <span class="text-[#e23636]">></span>
-                  <p class="terminal-line" data-text="sys.log: 99.9% Bug Fix Probability at First Coffee"></p>
+                  <p class="terminal-line" data-scramble="sys.log: 99.9% Bug Fix Probability at First Coffee" data-text="sys.log: 99.9% Bug Fix Probability at First Coffee"></p>
                </div>
                <div class="flex items-start gap-4">
                   <span class="text-[#e23636]">></span>
-                  <p class="terminal-line" data-text="sys.log: OVER 9000 Node Optimization Level"></p>
+                  <p class="terminal-line" data-scramble="sys.log: OVER 9000 Node Optimization Level" data-text="sys.log: OVER 9000 Node Optimization Level"></p>
                </div>
                <div class="flex items-start gap-4">
                   <span class="text-[#ab8885]">sys.log:</span>
-                  <p class="terminal-line text-[#ab8885]" data-text="ACCESS GRANTED."></p>
+                  <p class="terminal-line text-[#ab8885]" data-scramble="ACCESS GRANTED." data-text="ACCESS GRANTED."></p>
                </div>
             </div>
  
             <div class="flex flex-col lg:flex-row justify-between gap-12 w-full border-t border-[#5b403d] pt-12 relative z-10 max-w-3xl">
                <div class="flex flex-col gap-4">
-                  <span class="hacker-line text-[#e23636] text-xs inline-block">AWAITING_INPUT</span>
+                  <span data-scramble="AWAITING_INPUT" class="hacker-line text-[#e23636] text-xs inline-block cursor-default">AWAITING_INPUT</span>
                   <a href="mailto:francescolillo32@gmail.com" class="hacker-line link-underline text-xl md:text-2xl text-[#e2e2e2] decoration-0 inline-block">francescolillo32@gmail.com</a>
                </div>
             </div>
@@ -894,22 +894,29 @@ and visuals that actually leave a mark.
         // ============================================================
         const SCRAMBLE_CHARS = '@#$%!?<>~^*|/\\[]';
         function scrambleEl(el) {
-          const original = el.getAttribute('data-scramble') || el.textContent;
-          el.setAttribute('data-scramble', original);
-          let frame = 0; const totalFrames = 16;
+          // For terminal-line: source is data-text (the original content)
+          // For others: source is data-scramble attribute
+          const original = el.getAttribute('data-scramble') || el.textContent.trim();
+          if (!original || original.length < 2) return;
+          let frame = 0; const totalFrames = 18;
           const tid = setInterval(() => {
             el.textContent = original.split('').map((ch, i) => {
-              if (ch === ' ' || ch === '/') return ch;
+              if (ch === ' ' || ch === '/' || ch === ':' || ch === '.') return ch;
               if (frame / totalFrames > i / original.length) return ch;
               return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
             }).join('');
             frame++;
             if (frame > totalFrames) { clearInterval(tid); el.textContent = original; }
-          }, 35);
+          }, 30);
         }
-        document.querySelectorAll('[data-scramble]').forEach(el => {
-          el.addEventListener('mouseenter', () => scrambleEl(el));
-        });
+        function attachScrambleListeners() {
+          document.querySelectorAll('[data-scramble]').forEach(el => {
+            if (el._scrambleAttached) return;
+            el._scrambleAttached = true;
+            el.addEventListener('mouseenter', () => scrambleEl(el));
+          });
+        }
+        attachScrambleListeners();
 
         // Init Lenis Smooth Scroll
         const lenis = new Lenis({
@@ -1446,7 +1453,11 @@ and visuals that actually leave a mark.
             let lineIndex = 0;
 
             function typeNextLine() {
-              if (lineIndex >= lines.length) return;
+              if (lineIndex >= lines.length) {
+                // All lines done — attach scramble on newly filled terminal-line elements
+                attachScrambleListeners();
+                return;
+              }
               const el = lines[lineIndex];
               const text = el.getAttribute('data-text') || '';
               let charIndex = 0;
